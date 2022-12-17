@@ -5,8 +5,180 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:alg_Game_Life"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Algorithms: Game Life" 
+        Height="720" 
+        Width="1280">
+    <Window.Resources>
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Border>
+                            <Grid Margin="0 0 1 0">
+                                <Grid Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type StackPanel}}}" Height="20">
+                                    <Border x:Name="border"
+                                            CornerRadius="0,0,0,0"
+                                            Background="#464646"
+                                            BorderBrush="#d4d4d4"
+                                            BorderThickness="1"/>
+                                </Grid>
+                                <ContentPresenter ContentSource="Header"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="border"
+                                        Property="Background"
+                                        Value="#656565"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected"
+                                     Value="True">
+                                <Setter TargetName="border"
+                                        Property="Background"
+                                        Value="#7160e8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type RadioButton}">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="#7160e8"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
-    </Grid>
+    <DockPanel>
+        <!--Верхнее меню-->
+        <Menu 
+            DockPanel.Dock="Top" 
+            Height="20" 
+            Background="#1f1f1f"
+            BorderBrush="#464646"
+            BorderThickness="0">
+            <MenuItem Header="File" Background="#1f1f1f" Foreground="#fff" BorderThickness="0" VerticalAlignment="Center">
+                <MenuItem Header ="Save" Background="#1f1f1f" BorderThickness="0"/>
+                <MenuItem Header ="Save as" Background="#1f1f1f" BorderThickness="0"/>
+                <MenuItem Header ="Exit" Background="#1f1f1f" BorderThickness="0"/>
+            </MenuItem>
+            <MenuItem Header="Info" Background="#1f1f1f" Foreground="#fff" BorderThickness="0" VerticalAlignment="Center">
+                <MenuItem Header ="Алгоритмы: Тема 5. Алгоритмы на графах." Background="#1f1f1f" BorderThickness="0"></MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <!--Нижний статус бар-->
+        <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" Height="20" Background="#424242" Foreground="#fff">
+            <StatusBarItem Background="#7160e8">
+                <TextBlock x:Name="tbIsSavedProject" Text="Saved" VerticalAlignment="Center"></TextBlock>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock x:Name="tbCurrentState" Text="None" VerticalAlignment="Center"></TextBlock>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock x:Name="tbCoordinates" Text="Coordinates" VerticalAlignment="Center"></TextBlock>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock x:Name="tbIsHover" Text="Hover" VerticalAlignment="Center"></TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+
+        <!--Главный контейнер-->
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="292"/>
+            </Grid.ColumnDefinitions>
+            
+            <!--Контейнер холста, панели инструментов, консоли-->
+            <Grid Grid.Column="0" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="200"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" VerticalAlignment="Stretch" Background="#1f1f1f">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TabControl Grid.Column="2" Background="#1f1f1f" BorderBrush="#464646">
+                        <TabItem Foreground="#fff">
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal" Margin="5 0 15 0">
+                                    <TextBlock x:Name="tbProjectName" Text="ProjectName.csv"/>
+                                    <TextBlock x:Name="tbIndicatorSaved" Text=""/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <TabItem.Content>
+                                <Border x:Name="CanvasBorder" Background="#1f1f1f" Padding="5 0 5 5">
+                                    <Border BorderBrush="#464646" BorderThickness="1">
+                                        <Canvas x:Name="Canvas"/>
+                                    </Border>
+                                </Border>
+                            </TabItem.Content>
+                        </TabItem>
+                    </TabControl>
+                    <!--Холст-->
+
+                    <GridSplitter Grid.Column="1" ShowsPreview="True" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="#464646"/>
+
+                    <!--Панель инструментов-->
+                    <StackPanel Grid.Column="0" Orientation="Vertical" Background="#1f1f1f">
+                        <StackPanel Margin="3 0 3 0">
+                            <Button x:Name="btnAddElements" Content="Add Elements" Height="20" Background="#424242" Foreground="#fff"></Button>
+                            <Separator Background="#464646"/>
+                            <Button x:Name="btnDeleteElements" Content="Delete Elements" Height="20" Background="#424242" Foreground="#fff"></Button>
+                        </StackPanel>
+                    </StackPanel>
+
+                </Grid>
+
+                <GridSplitter Grid.Row="1" ShowsPreview="True" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="#464646"/>
+
+                <Border Grid.Row="2" VerticalAlignment="Stretch" Background="#1f1f1f" BorderBrush="#464646" BorderThickness="2">
+                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                        <Grid DockPanel.Dock="Top" VerticalAlignment="Center" Margin="3 0 3 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Foreground="#d6d6d6" Padding="0 0 3 0">Statistics</TextBlock>
+                            <Separator Grid.Column="1" Background="#7160e8" VerticalAlignment="Center"/>
+                        </Grid>
+                        <Separator DockPanel.Dock="Top" Background="#464646"/>
+                        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                            <StackPanel x:Name="spConsoleContainer" Orientation="Vertical" Margin="3 0 0 3"/>
+                        </ScrollViewer>
+                        
+                    </DockPanel>
+                </Border>
+
+            </Grid>
+
+            <GridSplitter Grid.Column="1" ShowsPreview="True" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="#464646"/>
+
+            <!--Контейнер панели управления-->
+            <Border Grid.Column="2" BorderBrush="#464646" BorderThickness="2" Background="#1f1f1f" HorizontalAlignment="Stretch">
+                <StackPanel>
+                    <TextBlock Foreground="#d6d6d6" Padding="3 0 0 0">Control Panel</TextBlock>
+                    <Separator Background="#464646"/>
+                    <StackPanel Orientation="Vertical">
+
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+    </DockPanel>
 </Window>
