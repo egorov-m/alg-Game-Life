@@ -6,6 +6,16 @@
     <RootNamespace>alg_Game_Life</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>False</UseWindowsForms>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WriteableBitmapEx" Version="1.6.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RealTimeGraphX.WPF\RealTimeGraphX.WPF.csproj" />
+    <ProjectReference Include="..\RealTimeGraphX\RealTimeGraphX.csproj" />
+  </ItemGroup>
 
 </Project>

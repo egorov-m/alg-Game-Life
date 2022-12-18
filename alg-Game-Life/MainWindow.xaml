@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:alg_Game_Life"
+        xmlns:realTimeGraphX="clr-namespace:RealTimeGraphX.WPF;assembly=RealTimeGraphX.WPF"
+        xmlns:graphs="clr-namespace:alg_Game_Life.Graphs"
         mc:Ignorable="d"
         Title="Algorithms: Game Life" 
         Height="720" 
@@ -52,6 +54,54 @@
                     <Setter Property="Background" Value="#7160e8"></Setter>
                 </Trigger>
             </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type graphs:WpfGraphControl}">
+            <Setter Property="StringFormatX" Value="0"></Setter>
+            <Setter Property="StringFormatY" Value="hh\:mm\:ss"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="BorderBrush" Value="#FF2E2E2E"></Setter>
+            <Setter Property="Padding" Value="20 10 25 10"></Setter>
+            <Setter Property="FontSize" Value="11"></Setter>
+            <Setter Property="Foreground" Value="#7160e8"></Setter>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#7160e8"/>
+                        <GradientStop Color="#1f1f1f"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type graphs:WpfGraphControl}">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="0"
+                            Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="35"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="45"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="1">
+                                    <realTimeGraphX:WpfGraphGridLines Controller="{TemplateBinding Controller}" Foreground="#FF2E2E2E" />
+                                    <realTimeGraphX:WpfGraphSurface x:Name="surface" Controller="{TemplateBinding Controller}" DisplayToolTip="{TemplateBinding DisplayToolTip}" BorderThickness="1 0 0 1" BorderBrush="{TemplateBinding Foreground}" />
+                                </Grid>
+
+                                <realTimeGraphX:WpfGraphAxisControl Grid.Row="0" Grid.Column="0" Orientation="Vertical" Controller="{TemplateBinding Controller}" StringFormat="{TemplateBinding StringFormatX}" />
+                                <realTimeGraphX:WpfGraphAxisControl Orientation="Horizontal" Controller="{TemplateBinding Controller}" Grid.Column="1" Grid.Row="1" StringFormat="{TemplateBinding StringFormatY}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
@@ -147,7 +197,7 @@
                 <GridSplitter Grid.Row="1" ShowsPreview="True" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="#464646"/>
 
                 <Border Grid.Row="2" VerticalAlignment="Stretch" Background="#1f1f1f" BorderBrush="#464646" BorderThickness="2">
-                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Grid DockPanel.Dock="Top" VerticalAlignment="Center" Margin="3 0 3 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -157,9 +207,12 @@
                             <Separator Grid.Column="1" Background="#7160e8" VerticalAlignment="Center"/>
                         </Grid>
                         <Separator DockPanel.Dock="Top" Background="#464646"/>
-                        <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                            <StackPanel x:Name="spConsoleContainer" Orientation="Vertical" Margin="3 0 0 3"/>
-                        </ScrollViewer>
+
+                        <graphs:WpfGraphControl Controller="{Binding Controller}">
+                            <graphs:WpfGraphControl.DataContext>
+                                <graphs:ViewModel/>
+                            </graphs:WpfGraphControl.DataContext>
+                        </graphs:WpfGraphControl>
                         
                     </DockPanel>
                 </Border>
