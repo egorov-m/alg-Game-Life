@@ -1,2 +1,2 @@
-# alg-Game-Life
-Алгоритмы: Игра Жизнь
+# alg-Simulation-Evolution
+Алгоритмы: Симуляция эволюции

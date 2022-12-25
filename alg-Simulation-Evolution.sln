@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealTimeGraphX.WPF", "RealTimeGraphX.WPF\RealTimeGraphX.WPF.csproj", "{B1BDF16E-337B-41AB-98A2-21BD82D9B820}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "alg-Game-Life", "alg-Game-Life\alg-Game-Life.csproj", "{69EF78EE-D336-4C6C-B4F7-0686E6963862}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "alg-Simulation-Evolution", "alg-Simulation-Evolution\alg-Simulation-Evolution.csproj", "{69EF78EE-D336-4C6C-B4F7-0686E6963862}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealTimeGraphX", "RealTimeGraphX\RealTimeGraphX.csproj", "{D1EF311F-7955-4FBD-B417-1DCC04B67F23}"
 EndProject

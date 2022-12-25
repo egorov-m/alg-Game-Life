@@ -1,7 +1,7 @@
-﻿<Application x:Class="alg_Game_Life.App"
+﻿<Application x:Class="alg_Simulation_Evolution.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:alg_Game_Life"
+             xmlns:local="clr-namespace:alg_Simulation_Evolution"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

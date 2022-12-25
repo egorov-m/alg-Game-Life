@@ -5,7 +5,7 @@ using RealTimeGraphX;
 using RealTimeGraphX.DataPoints;
 using RealTimeGraphX.WPF;
 
-namespace alg_Game_Life.Graphs
+namespace alg_Simulation_Evolution.Graphs
 {
     public class ViewModel
     {
@@ -19,7 +19,7 @@ namespace alg_Game_Life.Graphs
             Controller.Range.MaximumY = int.MaxValue;
             Controller.Range.MaximumX = TimeSpan.FromSeconds(10);
             Controller.Range.AutoY = true;
-            Controller.Range.AutoYFallbackMode = GraphRangeAutoYFallBackMode.MinMax;
+            Controller.Range.AutoYFallbackMode = GraphRangeAutoYFallBackMode.None;
 
             Controller.DataSeriesCollection.Add(new WpfGraphDataSeries()
             {
@@ -37,10 +37,10 @@ namespace alg_Game_Life.Graphs
         {
             var thread = new Thread(() =>
             {
-                int index = 1;
+                var index = 1;
                 while (true)
                 {
-                    var y = index;
+                    var y = MainWindow.CurrentCountElements; //index;
                     var x = DateTime.Now.TimeOfDay;
 
                     Controller.PushData(x, y);

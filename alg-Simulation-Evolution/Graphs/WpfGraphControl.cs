@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using RealTimeGraphX;
 
-namespace alg_Game_Life.Graphs
+namespace alg_Simulation_Evolution.Graphs
 {
     public class WpfGraphControl : Control
     {
