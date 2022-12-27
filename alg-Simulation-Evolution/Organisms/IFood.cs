@@ -11,6 +11,9 @@ namespace alg_Simulation_Evolution.Organisms
         /// <summary> Цвет тела по умолчанию </summary>
         new static Color DefaultBodyColor => Color.FromRgb(154, 230, 154);
 
+        /// <summary> Цвет обводки организма (в соответствии с типом) </summary>
+        static Color BodyStrokeColor { get; set; } = Color.FromRgb(214, 214, 214);
+
         /// <summary> Единицы насыщения </summary>
         double SaturationUnit => BodySize * 0.25;
     }

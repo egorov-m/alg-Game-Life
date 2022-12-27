@@ -21,6 +21,9 @@ namespace alg_Simulation_Evolution.Organisms
         /// <summary> Лимит размера для деления организма </summary>
         private double _divSizeLimit;
 
+        /// <summary> Цвет обводки организма (в соответствии с типом) </summary>
+        public virtual Color BodyStrokeColor { get; set; } = IOrganism.BodyStrokeColor;
+
         /// <summary> Лимит размера для деления организма </summary>
         public double DivSizeLimit
         {
@@ -82,7 +85,7 @@ namespace alg_Simulation_Evolution.Organisms
 
         public Organism(Panel canvas)
         {
-            (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor);
+            (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor, BodyStrokeColor);
             _bodySize = IOrganism.DefaultSize;
             BodyColor = IOrganism.DefaultBodyColor;
             _speed = IOrganism.DefaultSpeed;
@@ -92,7 +95,7 @@ namespace alg_Simulation_Evolution.Organisms
 
         public Organism(Panel canvas, double speed)
         {
-            (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor);
+            (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor, BodyStrokeColor);
             BodyColor = IOrganism.DefaultBodyColor;
             _bodySize = IOrganism.DefaultSize;
             Speed = speed;
@@ -102,7 +105,7 @@ namespace alg_Simulation_Evolution.Organisms
 
         public Organism(Panel canvas, double size, double speed)
         {
-            (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor);
+            (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor, BodyStrokeColor);
             BodyColor = IOrganism.DefaultBodyColor;
             BodySize = size;
             Speed = speed;

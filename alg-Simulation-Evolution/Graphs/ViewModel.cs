@@ -40,7 +40,7 @@ namespace alg_Simulation_Evolution.Graphs
                 var index = 1;
                 while (true)
                 {
-                    var y = MainWindow.CurrentCountElements; //index;
+                    var y = index;
                     var x = DateTime.Now.TimeOfDay;
 
                     Controller.PushData(x, y);

@@ -21,10 +21,13 @@ namespace alg_Simulation_Evolution.Organisms
         List<object?> Subsidiary { get; }
 
         /// <summary> Размер по умолчанию </summary>
-        new static double DefaultSize => 20;
+        new static double DefaultSize => 30;
 
         /// <summary> Цвет тела по умолчанию </summary>
         new static Color DefaultBodyColor => Color.FromRgb(113, 96, 232);
+
+        /// <summary> Цвет обводки организма (в соответствии с типом) </summary>
+        static Color BodyStrokeColor { get; set; } = Color.FromRgb(214, 214, 214);
 
         /// <summary> Скорость передвижения по умолчанию </summary>
         static double DefaultSpeed => 10;

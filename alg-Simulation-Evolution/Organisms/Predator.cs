@@ -1,10 +1,14 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace alg_Simulation_Evolution.Organisms
 {
     /// <summary> Класс хищника </summary>
     public class Predator : Organism, IPredator
     {
+        /// <summary> Цвет обводки организма (в соответствии с типом) </summary>
+        public override Color BodyStrokeColor { get; set; } = IPredator.BodyStrokeColor;
+
         public Predator(Panel canvas) : base(canvas)
         {
         }

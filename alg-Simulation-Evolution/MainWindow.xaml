@@ -7,7 +7,7 @@
         xmlns:realTimeGraphX="clr-namespace:RealTimeGraphX.WPF;assembly=RealTimeGraphX.WPF"
         xmlns:graphs="clr-namespace:alg_Simulation_Evolution.Graphs"
         mc:Ignorable="d"
-        Title="Algorithms: Game Life" 
+        Title="Algorithms: Simulation Evolution" 
         Height="720" 
         Width="1280">
     <Window.Resources>
@@ -119,7 +119,7 @@
                 <MenuItem Header ="Exit" Background="#1f1f1f" BorderThickness="0"/>
             </MenuItem>
             <MenuItem Header="Info" Background="#1f1f1f" Foreground="#fff" BorderThickness="0" VerticalAlignment="Center">
-                <MenuItem Header ="Алгоритмы: Тема 5. Алгоритмы на графах." Background="#1f1f1f" BorderThickness="0"></MenuItem>
+                <MenuItem Header ="Алгоритмы: Симуляция эволюции." Background="#1f1f1f" BorderThickness="0"></MenuItem>
             </MenuItem>
         </Menu>
 
@@ -146,7 +146,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="292"/>
             </Grid.ColumnDefinitions>
-            
+
             <!--Контейнер холста, панели инструментов, консоли-->
             <Grid Grid.Column="0" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
@@ -213,7 +213,7 @@
                                 <graphs:ViewModel/>
                             </graphs:WpfGraphControl.DataContext>
                         </graphs:WpfGraphControl>
-                        
+
                     </DockPanel>
                 </Border>
 
@@ -224,10 +224,199 @@
             <!--Контейнер панели управления-->
             <Border Grid.Column="2" BorderBrush="#464646" BorderThickness="2" Background="#1f1f1f" HorizontalAlignment="Stretch">
                 <StackPanel>
-                    <TextBlock Foreground="#d6d6d6" Padding="3 0 0 0">Control Panel</TextBlock>
+                    <TextBlock Foreground="#d6d6d6" Padding="3 0 0 0">Sample Builder</TextBlock>
                     <Separator Background="#464646"/>
                     <StackPanel Orientation="Vertical">
+                        <StackPanel Background="#464646">
+                            <TextBlock Text="Создайте начальную выборку для симуляции эволюции." Foreground="#d6d6d6" TextWrapping="Wrap"/>
+                        </StackPanel>
 
+                        <Separator Background="#464646" BorderThickness="1"/>
+
+                        <Border Background="#464646" BorderThickness="0" Padding="3 3 3 3">
+                            <StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <Button x:Name="btnRandomSampling" Content="Случайно настроить выборку [+]" Height="20" Background="#424242" Foreground="#d6d6d6">
+                                        <Button.ToolTip>
+                                            <ToolTip Background="#424242" Foreground="#d6d6d6">Будет сгенерирована выборка из указанного числа организмов с случайными параметрами.></ToolTip>
+                                        </Button.ToolTip>
+                                    </Button>
+                                    <Separator Background="#464646" BorderThickness="1"/>
+                                    <DockPanel DockPanel.Dock="Bottom">
+                                        <TextBlock DockPanel.Dock="Left" Text="Количество элементов:" Foreground="#d6d6d6">
+                                            <TextBlock.ToolTip>
+                                                <ToolTip Background="#424242" Foreground="#d6d6d6">
+                                                    <TextBlock Text="Указать сколько элементов будут добавлено."/>
+                                                </ToolTip>
+                                            </TextBlock.ToolTip>
+                                        </TextBlock>
+                                        <Separator DockPanel.Dock="Left" Width="5" Background="Transparent"/>
+                                        <TextBox x:Name="tbCountElements" DockPanel.Dock="Right" Text="10" Background="#424242" Foreground="#d6d6d6"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Separator Background="#464646" BorderThickness="1"/>
+
+                        <Border Background="#464646" BorderThickness="0" Padding="0 3 3 3">
+                            <DockPanel DockPanel.Dock="Bottom">
+                                <Separator DockPanel.Dock="Left" Width="5" Background="Transparent"/>
+
+                                <Button x:Name="btnAddOrganisms" Width="180" Padding="3 0 3 0" DockPanel.Dock="Left" Height="20" Background="#424242" Foreground="#d6d6d6">
+                                    <Button.Content>
+                                        <TextBlock Text="Добавить обычные организмы"/>
+                                    </Button.Content>
+                                    <Button.ToolTip>
+                                        <ToolTip Background="#424242" Foreground="#d6d6d6">Будет добавлено указанное число обычных организмов.></ToolTip>
+                                    </Button.ToolTip>
+                                </Button>
+
+                                <Separator Background="#464646" BorderThickness="1"/>
+
+                                <TextBox x:Name="tbAddOrganisms" DockPanel.Dock="Right" Text="10" Background="#424242" Foreground="#d6d6d6"/>
+                            </DockPanel>
+                        </Border>
+                        
+                        <Separator Background="#464646" BorderThickness="1"/>
+
+                        <Border Background="#464646" BorderThickness="0" Padding="0 3 3 3">
+                            <DockPanel DockPanel.Dock="Bottom">
+                                <Separator DockPanel.Dock="Left" Width="5" Background="Transparent"/>
+
+                                <Button x:Name="btnAddPredators" Width="180" Padding="3 0 3 0" DockPanel.Dock="Left" Height="20" Background="#424242" Foreground="#d6d6d6">
+                                    <Button.Content>
+                                        <TextBlock Text="Добавить хищников"/>
+                                    </Button.Content>
+                                    <Button.ToolTip>
+                                        <ToolTip Background="#424242" Foreground="#d6d6d6">Будет добавлено указанное число хищников.></ToolTip>
+                                    </Button.ToolTip>
+                                </Button>
+
+                                <Separator Background="#464646" BorderThickness="1"/>
+
+                                <TextBox x:Name="tbAddPredators" DockPanel.Dock="Right" Text="10" Background="#424242" Foreground="#d6d6d6"/>
+                            </DockPanel>
+                        </Border>
+                        
+                        <Separator Background="#464646" BorderThickness="1"/>
+
+                        <Border Background="#464646" BorderThickness="0" Padding="0 3 3 3">
+                            <DockPanel DockPanel.Dock="Bottom">
+                                <Separator DockPanel.Dock="Left" Width="5" Background="Transparent"/>
+
+                                <Button x:Name="btnAddFood" Width="180" Padding="3 0 3 0" DockPanel.Dock="Left" Height="20" Background="#424242" Foreground="#d6d6d6">
+                                    <Button.Content>
+                                        <TextBlock Text="Добавить пищу"/>
+                                    </Button.Content>
+                                    <Button.ToolTip>
+                                        <ToolTip Background="#424242" Foreground="#d6d6d6">Будет добавлено указанное число единиц пищи.></ToolTip>
+                                    </Button.ToolTip>
+                                </Button>
+
+                                <Separator Background="#464646" BorderThickness="1"/>
+
+                                <TextBox x:Name="tbAddFood" DockPanel.Dock="Right" Text="10" Background="#424242" Foreground="#d6d6d6"/>
+                            </DockPanel>
+                        </Border>
+                        
+                        <Separator Background="#464646" BorderThickness="1"/>
+
+                        <Border Background="#464646" BorderThickness="0" Padding="5 3 3 3">
+                            <Button x:Name="btnResetSelection" Padding="0 0 3 0" DockPanel.Dock="Left" Height="20" Background="#424242" Foreground="#d6d6d6">
+                                <Button.Content>
+                                    <TextBlock Text="Сбросить собранную выборку"/>
+                                </Button.Content>
+                                <Button.ToolTip>
+                                    <ToolTip Background="#424242" Foreground="#d6d6d6">Будет сброшена до начальной выборки [0 элементов].></ToolTip>
+                                </Button.ToolTip>
+                            </Button>
+                        </Border>
+                        
+                        <Separator Background="#464646" BorderThickness="1"/>
+
+                        <Border Background="#464646" BorderThickness="0" Padding="3 3 3 3">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="5"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" x:Name="tblockSizeOrganism" Text="Размер организмов:" Foreground="#d6d6d6">
+                                    <TextBlock.ToolTip>
+                                        <ToolTip Background="#424242" Foreground="#d6d6d6">
+                                            <TextBlock Text="Указать размер добавляемых организмов."/>
+                                        </ToolTip>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+                                <TextBox Grid.Column="1" Grid.Row="0" x:Name="tSizeOrganism" DockPanel.Dock="Right" Text="30" Background="#424242" Foreground="#d6d6d6"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" x:Name="tblockSpeedOrganism" Text="Скорость организмов:" Foreground="#d6d6d6">
+                                    <TextBlock.ToolTip>
+                                        <ToolTip Background="#424242" Foreground="#d6d6d6">
+                                            <TextBlock Text="Указать скорость добавляемых организмов."/>
+                                        </ToolTip>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+                                <TextBox Grid.Column="1" Grid.Row="2" x:Name="tSpeedOrganism" DockPanel.Dock="Right" Text="10" Background="#424242" Foreground="#d6d6d6"/>
+
+                            </Grid>
+                        </Border>
+
+                        <Separator Background="#464646" BorderThickness="1"/>
+
+                        <Border Background="#464646" BorderThickness="0" Padding="3 3 3 3">
+                            <DockPanel>
+                                <StackPanel DockPanel.Dock="Top">
+                                    <TextBlock Text="Управление эволюцией" Foreground="#d6d6d6" TextAlignment="Center"/>
+                                    <TextBlock FontSize="10" Foreground="#d6d6d6" TextAlignment="Center">
+                                        <TextBlock.Text>-- смена эпох --</TextBlock.Text>
+                                        <TextBlock.ToolTip>
+                                            <ToolTip Background="#424242" Foreground="#d6d6d6">
+                                                <TextBlock Text="Появление пищи для организмов"/>
+                                            </ToolTip>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+                                    <Separator Background="#464646"/>
+                                </StackPanel>
+                                <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0"></ColumnDefinition>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="10"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="10"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="btnAlgReset" Width="60"  Grid.Column="0" Content="Reset" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0" Grid.ColumnSpan="2"/>
+                                    <Button x:Name="btnAlgDemoMode" Grid.Column="3" Width="75" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0">
+                                        <Button.Content>
+                                            <StackPanel>
+                                                <TextBlock Text="Automatic"/>
+                                                <TextBlock Text="1000 ms" FontSize="7" TextAlignment="Center" Foreground="#bdbdbd"/>
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Button x:Name="btnAlgStepForward" IsEnabled="False" Width="60" Grid.Column="5" Content="Forward" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0"/>
+                                </Grid>
+                                <Separator DockPanel.Dock="Top" Background="Transparent"/>
+                                <DockPanel DockPanel.Dock="Bottom">
+                                    <TextBlock DockPanel.Dock="Left" Text="Задержка:" Foreground="#d6d6d6">
+                                        <TextBlock.ToolTip>
+                                            <ToolTip Background="#424242" Foreground="#d6d6d6">
+                                                <TextBlock Text="В миллисекундах."/>
+                                            </ToolTip>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+                                    <Separator DockPanel.Dock="Left" Width="5" Background="Transparent"/>
+                                    <TextBox x:Name="tbDelayAlgStep" DockPanel.Dock="Right" Text="1000" Background="#424242" Foreground="#d6d6d6"/>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
                     </StackPanel>
                 </StackPanel>
             </Border>
