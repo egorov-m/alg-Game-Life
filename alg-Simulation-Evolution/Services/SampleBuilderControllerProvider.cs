@@ -215,19 +215,12 @@ namespace alg_Simulation_Evolution.Services
                         {
                             _dataProvider.Predators.Add(predator);
                         }
-                        else if (item is IOrganism organism)
+                        else
                         {
-                            _dataProvider.Organisms.Add(organism);
+                            _dataProvider.Organisms.Add(item);
                         }
                     }
                 }
-                //if (sender is IPredator predator)
-                //{
-                //    _dataProvider.Predators.Add(predator);
-                //} else if (sender is IOrganism organism)
-                //{
-                //    _dataProvider.Organisms.Add(organism);
-                //}
             }
         }
 
