@@ -35,17 +35,13 @@ namespace alg_Simulation_Evolution.Services
         /// <summary> Текстовый блок подзаголовка кнопки смены режима демонстрации </summary>
         private readonly TextBlock _tbBtnDemoModeSubtitle;
 
-        /// <summary> Кнопка шаг назад демонстрации </summary>
-        private readonly Button _btnReset;
-        /// <summary> Кнопка шаг вперёд демонстрации </summary>
-        private readonly Button _btnStepForward;
         /// <summary> Текстовое поля задержки демонстрации </summary>
         private readonly TextBox _textBoxDelay;
 
         /// <summary> Регулярное выражения для проверки соответствия вводимой задержки </summary>
         private readonly Regex _regexDelay = new (@"[0-9]+");
 
-        public EvolutionControllerProvider(Button btnDemoMode, Button btnReset, Button btnStepForward, TextBox textBoxDelay)
+        public EvolutionControllerProvider(Button btnDemoMode, TextBox textBoxDelay)
         {
             _btnDemoMode    = btnDemoMode;
             if (_btnDemoMode.Content is StackPanel sp)
@@ -54,13 +50,9 @@ namespace alg_Simulation_Evolution.Services
                 if (sp.Children[1] is TextBlock tb2) _tbBtnDemoModeSubtitle = tb2;
             }
 
-            _btnReset    = btnReset;
-            _btnStepForward = btnStepForward;
             _textBoxDelay        = textBoxDelay;
 
             _btnDemoMode.Click    += BtnChangeDemoModeOnClick;
-            _btnReset.Click    += BtnExecuteResetOnClick;
-            _btnStepForward.Click += BtnExecuteStepForwardOnClick;
 
             _textBoxDelay.PreviewTextInput += TextBoxDelayOnPreviewTextInput;
             _textBoxDelay.KeyDown += TextBoxDelayOnKeyDown;
@@ -84,19 +76,17 @@ namespace alg_Simulation_Evolution.Services
         {
             DemonstrationMode = demoMode;
 
-            _tbBtnDemoModeTitle.Text = demoMode.ToString("G");
+            _tbBtnDemoModeTitle.Text = demoMode == DemoMode.InProcess ? "Эволюция в процессе" : "Эволюция приостановлена";
             if (demoMode == DemoMode.InProcess)
             {
                 _tbBtnDemoModeSubtitle.Visibility = Visibility.Visible;
-                _tbBtnDemoModeSubtitle.Text = $"{Delay} ms";
+                _tbBtnDemoModeSubtitle.Text = $"{Delay}";
                 //_btnReset.IsEnabled    = false;
-                _btnStepForward.IsEnabled = false;
             }
             else
             {
                 _tbBtnDemoModeSubtitle.Visibility = Visibility.Collapsed;
                 //_btnReset.IsEnabled    = true;
-                _btnStepForward.IsEnabled = true;
             }
         }
 

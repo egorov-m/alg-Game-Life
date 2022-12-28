@@ -62,7 +62,6 @@ namespace alg_Simulation_Evolution.Organisms
                 if (value < 0) throw new ArgumentOutOfRangeException("Значение размера не может быть отрицательным.");
                 BodyEllipse.Width = value;
                 BodyEllipse.Height = value;
-                BodyEllipse.UpdateLayout();
                 _bodySize = value;
                 //BodyColor = ConfiguratorViewElement.GetColorAccordingSpeed(_speed);
 
@@ -97,6 +96,8 @@ namespace alg_Simulation_Evolution.Organisms
 
         public Organism(Panel canvas, double size, double speed)
         {
+            if (size > IOrganism.DefaultDivSizeLimit) 
+                throw new ArgumentOutOfRangeException($"Размер организмов не должен превышать лимит деления по умолчанию ({IOrganism.DefaultDivSizeLimit}).");
             _canvas = canvas;
             (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor, BodyStrokeColor);
             DivSizeLimit = IOrganism.DefaultDivSizeLimit;
@@ -110,6 +111,7 @@ namespace alg_Simulation_Evolution.Organisms
 
         public Organism(Panel canvas, double size, double speed, double divSizeLimit)
         {
+            if (size > divSizeLimit) throw new ArgumentOutOfRangeException("Размер организмов не должен превышать указанный лимит деления.");
             _canvas = canvas;
             (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(size, IOrganism.DefaultBodyColor, BodyStrokeColor);
             DivSizeLimit = divSizeLimit;
@@ -177,6 +179,7 @@ namespace alg_Simulation_Evolution.Organisms
             var tmp = BodySize;
             BodySize += food.SaturationUnit;
             Speed /= BodySize / tmp;
+            _canvas.Children.Remove(food.BodyGrid);
 
             return true;
         }

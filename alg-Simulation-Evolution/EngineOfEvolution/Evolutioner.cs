@@ -50,7 +50,7 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
         /// <summary> Эволюционировать: двигать все живые организмы к пище </summary>
         private async IAsyncEnumerable<(IOrganism, Point)> Evolving()
         {
-            foreach (var organism in _dataProvider.Organisms)
+            foreach (var organism in _dataProvider.Organisms.ToList())
             {
                 var (positionNearestFood, distanceNearestFood) = FindNearestFood(organism, _dataProvider.Food);
                 if (positionNearestFood != null)
@@ -60,7 +60,7 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
                 }
             }
 
-            foreach (var predator in _dataProvider.Predators)
+            foreach (var predator in _dataProvider.Predators.ToList())
             {
                 var (positionNearestFood, distanceNearestFood) = 
                     FindNearestFood(predator, 
@@ -98,18 +98,18 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
             {
                 x = _canvas.ActualWidth * 0.88;
             }
-            else if (x < _canvas.ActualWidth * 0.12)
+            else if (x < 10)
             {
-                x = _canvas.ActualWidth * 0.12;
+                x = 10;
             }
 
             if (y > _canvas.ActualHeight * 0.88)
             {
                 y = _canvas.ActualHeight * 0.88;
             }
-            else if (y < _canvas.ActualHeight * 0.12)
+            else if (y < 10)
             {
-                y = _canvas.ActualHeight * 0.12;
+                y = 10;
             }
         }
 
@@ -127,6 +127,7 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
         private (Point?, double) FindNearestFood(IBody organism, params IEnumerable<IFood>[] food)
         {
             Point? nearestPosition = null;
+            IFood? nearestFood = null;
             var minDistance = double.MaxValue;
             foreach (var list in food)
             {
@@ -138,13 +139,58 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
                         if (currentDistance < minDistance)
                         {
                             minDistance = currentDistance;
+                            nearestFood = f;
                             nearestPosition = f.Position;
                         }
                     }
                 }
             }
 
+            if (nearestFood != null)
+            {
+                if (CheckDistanceIsAvailableForAbsorb(organism, nearestFood, minDistance))
+                {
+                    ToTryToAbsorb(organism, nearestFood);
+                }
+            }
+
             return (nearestPosition, minDistance);
+        }
+
+        /// <summary> Проверить на доступном ли расстоянии находится организм от организма </summary>
+        /// <param name="organism1"> Организм 1 </param>
+        /// <param name="organism2"> Организм 2 </param>
+        /// <param name="currentDistance"> Текущая дистанция между организмами </param>
+        private bool CheckDistanceIsAvailableForAbsorb(IBody organism1, IBody organism2, double currentDistance)
+        {
+            return currentDistance < organism1.BodySize / 2 + organism2.BodySize / 2;
+        }
+
+        /// <summary> Пробовать поглощать </summary>
+        /// <param name="body"> Тело, которое хочет поглотить пищу </param>
+        /// <param name="food"> Пища для поглощения </param>
+        private void ToTryToAbsorb(IBody body, IFood food)
+        {
+            if (body is IPredator predator)
+            {
+                if (food is Organism organism)
+                {
+                    predator.AbsorbOrganism(organism);
+                    if (organism is IPredator pr) _dataProvider.Predators.Remove(pr);
+                    else _dataProvider.Organisms.Remove(organism);
+                } else if (food is Food food2)
+                {
+                    predator.AbsorbFood(food2);
+                    _dataProvider.Food.Remove(food2);
+                }
+            } else if (body is IOrganism organism)
+            {
+                if (food is Food food2)
+                {
+                    organism.AbsorbFood(food2);
+                    _dataProvider.Food.Remove(food2);
+                }
+            }
         }
     }
 }

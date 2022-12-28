@@ -23,7 +23,7 @@ namespace alg_Simulation_Evolution
 
             _canvas = Canvas;
             _dataProvider = new DataProvider();
-            _evolutionControllerProvider = new EvolutionControllerProvider(btnAlgDemoMode, btnAlgReset, btnAlgStepForward, tbDelayAlgStep);
+            _evolutionControllerProvider = new EvolutionControllerProvider(btnAlgDemoMode, tbDelayAlgStep);
             _builderControllerProvider = new SampleBuilderControllerProvider(_canvas,
                                                                              _dataProvider,
                                                                              btnRandomSampling,

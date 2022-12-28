@@ -205,13 +205,29 @@ namespace alg_Simulation_Evolution.Services
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                if (sender is IPredator predator)
+                if (sender is IList<IOrganism> list)
                 {
-                    _dataProvider.Predators.Add(predator);
-                } else if (sender is IOrganism organism)
-                {
-                    _dataProvider.Organisms.Add(organism);
+                    if (list.Count > 0)
+                    {
+                        var item = list[^1];
+
+                        if (item is IPredator predator)
+                        {
+                            _dataProvider.Predators.Add(predator);
+                        }
+                        else if (item is IOrganism organism)
+                        {
+                            _dataProvider.Organisms.Add(organism);
+                        }
+                    }
                 }
+                //if (sender is IPredator predator)
+                //{
+                //    _dataProvider.Predators.Add(predator);
+                //} else if (sender is IOrganism organism)
+                //{
+                //    _dataProvider.Organisms.Add(organism);
+                //}
             }
         }
 
@@ -226,7 +242,11 @@ namespace alg_Simulation_Evolution.Services
         /// <summary> Получить точку на холсте </summary>
         public static Point GetPoint(Random random, double width, double height)
         {
-            return new Point(width * 0.03 + random.NextDouble() * width * 0.87, width * 0.03 + random.NextDouble() * height * 0.87);
+            var x = width * 0.03 + random.NextDouble() * width * 0.87;
+            x = x < 10 ? 10 : x;
+            var y = width * 0.03 + random.NextDouble() * height * 0.87;
+            y = y < 10 ? 10 : y;
+            return new Point(x, y);
         }
 
         /// <summary> Парсинг целого числа из поля ввода </summary>

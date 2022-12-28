@@ -45,6 +45,7 @@ namespace alg_Simulation_Evolution.Organisms
             var tmp = BodySize;
             BodySize += organism.SaturationUnit;
             Speed /= BodySize / tmp;
+            _canvas.Children.Remove(organism.BodyGrid);
 
             return true;
         }

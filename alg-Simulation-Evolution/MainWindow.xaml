@@ -126,17 +126,17 @@
         <!--Нижний статус бар-->
         <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" Height="20" Background="#424242" Foreground="#fff">
             <StatusBarItem Background="#7160e8">
-                <TextBlock x:Name="tbIsSavedProject" Text="Saved" VerticalAlignment="Center"></TextBlock>
+                <TextBlock x:Name="tbIsSavedProject" Text="2022" VerticalAlignment="Center"></TextBlock>
             </StatusBarItem>
             <StatusBarItem>
-                <TextBlock x:Name="tbCurrentState" Text="None" VerticalAlignment="Center"></TextBlock>
+                <TextBlock x:Name="tbCurrentState" Text="Алгоритмы и анализ сложности: дополнительное задание." VerticalAlignment="Center"></TextBlock>
             </StatusBarItem>
-            <StatusBarItem>
+            <!--<StatusBarItem>
                 <TextBlock x:Name="tbCoordinates" Text="Coordinates" VerticalAlignment="Center"></TextBlock>
             </StatusBarItem>
             <StatusBarItem>
                 <TextBlock x:Name="tbIsHover" Text="Hover" VerticalAlignment="Center"></TextBlock>
-            </StatusBarItem>
+            </StatusBarItem>-->
         </StatusBar>
 
         <!--Главный контейнер-->
@@ -157,7 +157,7 @@
 
                 <Grid Grid.Row="0" VerticalAlignment="Stretch" Background="#1f1f1f">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="0"/> <!-- 0 - временно, чтобы скрыть лишнюю панель !-->
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
@@ -166,7 +166,7 @@
                         <TabItem Foreground="#fff">
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal" Margin="5 0 15 0">
-                                    <TextBlock x:Name="tbProjectName" Text="ProjectName.csv"/>
+                                    <TextBlock x:Name="tbProjectName" Text="Simulation Evolution"/>
                                     <TextBlock x:Name="tbIndicatorSaved" Text=""/>
                                 </StackPanel>
                             </TabItem.Header>
@@ -369,42 +369,47 @@
                             <DockPanel>
                                 <StackPanel DockPanel.Dock="Top">
                                     <TextBlock Text="Управление эволюцией" Foreground="#d6d6d6" TextAlignment="Center"/>
-                                    <TextBlock FontSize="10" Foreground="#d6d6d6" TextAlignment="Center">
-                                        <TextBlock.Text>-- смена эпох --</TextBlock.Text>
+                                    <!--<TextBlock FontSize="10" Foreground="#d6d6d6" TextAlignment="Center">
+                                        <TextBlock.Text>смена эпох</TextBlock.Text>
                                         <TextBlock.ToolTip>
                                             <ToolTip Background="#424242" Foreground="#d6d6d6">
                                                 <TextBlock Text="Появление пищи для организмов"/>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
-                                    </TextBlock>
+                                    </TextBlock>-->
                                     <Separator Background="#464646"/>
                                 </StackPanel>
                                 <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="0"></ColumnDefinition>
-                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="10"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         <ColumnDefinition Width="10"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <Button x:Name="btnAlgReset" Width="60"  Grid.Column="0" Content="Reset" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0" Grid.ColumnSpan="2"/>
-                                    <Button x:Name="btnAlgDemoMode" Grid.Column="3" Width="75" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0">
+                                    <!--<Button x:Name="btnAlgReset" Width="60"  Grid.Column="0" Content="Reset" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0" Grid.ColumnSpan="2"/>-->
+                                    <Button x:Name="btnAlgDemoMode" Grid.Column="3" Width="175" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0">
                                         <Button.Content>
                                             <StackPanel>
-                                                <TextBlock Text="InProcess"/>
-                                                <TextBlock Text="1000 ms" FontSize="7" TextAlignment="Center" Foreground="#bdbdbd"/>
+                                                <TextBlock Text="Эволюция в процессе"/>
+                                                <TextBlock Text="1000" FontSize="7" TextAlignment="Center" Foreground="#bdbdbd"/>
                                             </StackPanel>
                                         </Button.Content>
+                                        <Button.ToolTip>
+                                            <ToolTip Background="#424242" Foreground="#d6d6d6">
+                                                <TextBlock Text="Поставить / снять паузу с эволюции"/>
+                                            </ToolTip>
+                                        </Button.ToolTip>
                                     </Button>
-                                    <Button x:Name="btnAlgStepForward" IsEnabled="False" Width="60" Grid.Column="5" Content="Forward" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0"/>
+                                    <!--<Button x:Name="btnAlgStepForward" IsEnabled="False" Width="60" Grid.Column="5" Content="Forward" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0"/>-->
                                 </Grid>
                                 <Separator DockPanel.Dock="Top" Background="Transparent"/>
                                 <DockPanel DockPanel.Dock="Bottom">
-                                    <TextBlock DockPanel.Dock="Left" Text="Задержка:" Foreground="#d6d6d6">
+                                    <TextBlock DockPanel.Dock="Left" Text="Торможение эволюции:" Foreground="#d6d6d6">
                                         <TextBlock.ToolTip>
                                             <ToolTip Background="#424242" Foreground="#d6d6d6">
-                                                <TextBlock Text="В миллисекундах."/>
+                                                <TextBlock Text="Условные единицы характеризующие, то как быстро будет идти эволюция."/>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                                     </TextBlock>
