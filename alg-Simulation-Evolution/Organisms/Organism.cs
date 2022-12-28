@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Windows;
 using alg_Simulation_Evolution.Services;
 using System.Windows.Controls;
@@ -40,7 +39,7 @@ namespace alg_Simulation_Evolution.Organisms
         public event Action OnDivision;
 
         /// <summary> Дочерние организмы полученные делением </summary>
-        public List<object?> Subsidiary { get; } = new();
+        public List<IOrganism> Subsidiary { get; } = new();
 
         /// <summary> Скорость передвижения организма </summary>
         protected double _speed;
@@ -52,11 +51,8 @@ namespace alg_Simulation_Evolution.Organisms
             set
             {
                 if (value < 0) throw new ArgumentOutOfRangeException("Значение скорости не может быть меньше нуля.");
-                var diffIn = _speed == 0 ? 1.05 : value / _speed;
-                var newColor = Color.FromRgb(Convert.ToByte(BodyColor.R * diffIn), Convert.ToByte(BodyColor.G / diffIn), Convert.ToByte(BodyColor.B / diffIn));
-                BodyColor = newColor;
-
                 _speed = value;
+                BodyColor = ConfiguratorViewElement.GetColorAccordingSpeed(_speed);
             }
         }
 
@@ -67,60 +63,79 @@ namespace alg_Simulation_Evolution.Organisms
             set
             {
                 if (value < 0) throw new ArgumentOutOfRangeException("Значение размера не может быть отрицательным.");
-                var diffIn = _bodySize == 0 ? 1.05 : value / _bodySize;
-                var newColor = Color.FromRgb(Convert.ToByte(BodyColor.R / diffIn), Convert.ToByte(BodyColor.G * diffIn), Convert.ToByte(BodyColor.B * diffIn));
-                BodyColor = newColor;
-
                 BodyEllipse.Width = value;
                 BodyEllipse.Height = value;
                 _bodySize = value;
+                BodyColor = ConfiguratorViewElement.GetColorAccordingSpeed(_speed);
 
                 if (_bodySize > DivSizeLimit)
                 {
-                    Subsidiary.Add(Divide());
-                    OnDivision.Invoke();
+                    Subsidiary.Add(Divide(Position));
+                    OnDivision?.Invoke();
                 }
             }
         }
 
         public Organism(Panel canvas)
         {
+            _canvas = canvas;
             (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor, BodyStrokeColor);
             _bodySize = IOrganism.DefaultSize;
             BodyColor = IOrganism.DefaultBodyColor;
+            DivSizeLimit = IOrganism.DefaultDivSizeLimit;
             _speed = IOrganism.DefaultSpeed;
             canvas.Children.Add(BodyGrid);
-            _canvas = canvas;
         }
 
         public Organism(Panel canvas, double speed)
         {
+            _canvas = canvas;
             (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor, BodyStrokeColor);
+            DivSizeLimit = IOrganism.DefaultDivSizeLimit;
             BodyColor = IOrganism.DefaultBodyColor;
             _bodySize = IOrganism.DefaultSize;
             Speed = speed;
             canvas.Children.Add(BodyGrid);
-            _canvas = canvas;
         }
 
         public Organism(Panel canvas, double size, double speed)
         {
-            (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor, BodyStrokeColor);
-            BodyColor = IOrganism.DefaultBodyColor;
-            BodySize = size;
-            Speed = speed;
-            canvas.Children.Add(BodyGrid);
             _canvas = canvas;
+            (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor, BodyStrokeColor);
+            DivSizeLimit = IOrganism.DefaultDivSizeLimit;
+            BodyColor = IOrganism.DefaultBodyColor;
+
+            // !!! порядок важен, так-как размер может вызвать деление
+            Speed = speed;
+            BodySize = size;
+            canvas.Children.Add(BodyGrid);
+        }
+
+        public Organism(Panel canvas, double size, double speed, double divSizeLimit)
+        {
+            _canvas = canvas;
+            (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor, BodyStrokeColor);
+            DivSizeLimit = divSizeLimit;
+            BodyColor = IOrganism.DefaultBodyColor;
+
+            // !!! порядок важен, так-как размер может вызвать деление
+            Speed = speed;
+            BodySize = size;
+            canvas.Children.Add(BodyGrid);
         }
 
         /// <summary> Деление организма на два </summary>
-        public object? Divide()
+        public virtual IOrganism Divide(Point position)
         {
-            BodySize /= 2;
             Speed *= 2;
+            BodySize /= 2;
+            //var tmp = DivSizeLimit / 2;
+            //DivSizeLimit = tmp > IOrganism.DefaultSize ? tmp : IOrganism.DefaultSize;
 
-            const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
-            return Activator.CreateInstance(GetType(), flags, null, _canvas, BodySize, Speed);
+            var organism = new Organism(_canvas, BodySize, Speed, DivSizeLimit);
+            organism.SetPosition(position);
+
+            return organism;
         }
 
         /// <summary> Переместиться по холсту в точку </summary>
@@ -128,6 +143,7 @@ namespace alg_Simulation_Evolution.Organisms
         /// <param name="y"> Позиция по Y </param>
         public void MoveOnCanvas(double x, double y)
         {
+            Position = new Point(x, y);
             BodyGrid.Margin = new Thickness(x - BodyEllipse.Width / 2, y - BodyEllipse.Height / 2, 0, 0);
         }
 
@@ -135,6 +151,7 @@ namespace alg_Simulation_Evolution.Organisms
         /// <param name="position"> Новая позиция </param>
         public void MoveOnCanvas(Point position)
         {
+            Position = position;
             BodyGrid.Margin = new Thickness(position.X - BodyEllipse.Width / 2, position.Y - BodyEllipse.Height / 2, 0, 0);
         }
 
@@ -143,7 +160,8 @@ namespace alg_Simulation_Evolution.Organisms
         /// <param name="diffY"> Смещение по Y </param>
         public void OffsetOnCanvas(double diffX, double diffY)
         {
-            MoveOnCanvas(BodyGrid.Margin.Left + diffX, BodyGrid.Margin.Top + diffY);
+            Position = new Point(BodyGrid.Margin.Left + diffX, BodyGrid.Margin.Top + diffY);
+            MoveOnCanvas(Position);
         }
 
         /// <summary> Поглотить еду </summary>

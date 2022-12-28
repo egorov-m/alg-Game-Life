@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Color = System.Windows.Media.Color;
 
 namespace alg_Simulation_Evolution.Organisms
 {
     /// <summary> Базовый класс сущности </summary>
     public abstract class Essence : IBody
     {
+        /// <summary> Позиция тела на холсте </summary>
+        public Point Position { get; protected set; }
+
         /// <summary> Сетка для элементов тела </summary>
         public Grid BodyGrid { get; init; }
 
@@ -42,6 +47,14 @@ namespace alg_Simulation_Evolution.Organisms
                 BodyEllipse.Fill = new SolidColorBrush(value);
                 _bodyColor = value;
             }
+        }
+
+        /// <summary> Установить позицию на холсте </summary>
+        /// /// <param name="position"> Позиция на холсте </param>
+        public void SetPosition(Point position)
+        {
+            Position = position;
+            BodyGrid.Margin = new Thickness(position.X - BodyEllipse.Width / 2, position.Y - BodyEllipse.Height / 2, 0, 0);
         }
     }
 }

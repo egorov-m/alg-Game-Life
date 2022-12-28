@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace alg_Simulation_Evolution.Organisms
@@ -19,6 +20,24 @@ namespace alg_Simulation_Evolution.Organisms
 
         public Predator(Panel canvas, double size, double speed) : base(canvas, size, speed)
         {
+        }
+
+        public Predator(Panel canvas, double size, double speed, double divSizeLimit) : base(canvas, size, speed, divSizeLimit)
+        {
+        }
+
+        /// <summary> Деление организма на два </summary>
+        public override IOrganism Divide(Point position)
+        {
+            BodySize /= 2;
+            Speed *= 2;
+            //var tmp = DivSizeLimit / 2;
+            //DivSizeLimit = tmp > IOrganism.DefaultSize ? tmp : IOrganism.DefaultSize;
+
+            var predator = new Predator(_canvas, BodySize, Speed, DivSizeLimit);
+            predator.SetPosition(position);
+
+            return predator;
         }
 
         public bool AbsorbOrganism(Organism organism)

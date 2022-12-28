@@ -18,7 +18,7 @@ namespace alg_Simulation_Evolution.Organisms
         event Action OnDivision;
 
         /// <summary> Дочерние организмы полученные делением </summary>
-        List<object?> Subsidiary { get; }
+        List<IOrganism> Subsidiary { get; }
 
         /// <summary> Размер по умолчанию </summary>
         new static double DefaultSize => 30;
@@ -36,7 +36,8 @@ namespace alg_Simulation_Evolution.Organisms
         double Speed { get; }
 
         /// <summary> Деление организма на два </summary>
-        object? Divide();
+        /// /// <param name="position"> Позиция для установки нового организма </param>
+        IOrganism Divide(Point position);
 
         /// <summary> Переместиться по холсту в точку </summary>
         /// <param name="x"> Позиция по X </param>
