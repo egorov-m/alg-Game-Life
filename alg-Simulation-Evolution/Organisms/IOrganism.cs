@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
 
@@ -15,10 +14,10 @@ namespace alg_Simulation_Evolution.Organisms
         double DivSizeLimit { get; set; }
 
         /// <summary> Событие деления клетки </summary>
-        event Action OnDivision;
+        //event Func<Point, IOrganism> OnDivision;
 
         /// <summary> Дочерние организмы полученные делением </summary>
-        List<IOrganism> Subsidiary { get; }
+        ObservableCollection<IOrganism> Subsidiary { get; }
 
         /// <summary> Размер по умолчанию </summary>
         new static double DefaultSize => 30;

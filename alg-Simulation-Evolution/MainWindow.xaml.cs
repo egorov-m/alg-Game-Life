@@ -1,16 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Threading;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using alg_Simulation_Evolution.Organisms;
+using alg_Simulation_Evolution.Data;
 using alg_Simulation_Evolution.Services;
-using Color = System.Windows.Media.Color;
-using Image = System.Drawing.Image;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace alg_Simulation_Evolution
 {
@@ -20,6 +11,7 @@ namespace alg_Simulation_Evolution
     public partial class MainWindow : Window
     {
         private Canvas _canvas;
+        private DataProvider _dataProvider;
         private SampleBuilderControllerProvider _builderControllerProvider;
 
         public MainWindow()
@@ -27,7 +19,9 @@ namespace alg_Simulation_Evolution
             InitializeComponent();
 
             _canvas = Canvas;
+            _dataProvider = new DataProvider();
             _builderControllerProvider = new SampleBuilderControllerProvider(_canvas,
+                                                                             _dataProvider,
                                                                              btnRandomSampling,
                                                                              tbRandomSampling,
                                                                              btnAddOrganisms,

@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using alg_Simulation_Evolution.Services;
 using System.Windows.Controls;
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
+using System.Collections.Specialized;
 
 namespace alg_Simulation_Evolution.Organisms
 {
@@ -36,10 +37,10 @@ namespace alg_Simulation_Evolution.Organisms
         }
 
         /// <summary> Событие деления клетки </summary>
-        public event Action OnDivision;
+        //public event Action OnDivision;
 
         /// <summary> Дочерние организмы полученные делением </summary>
-        public List<IOrganism> Subsidiary { get; } = new();
+        public ObservableCollection<IOrganism> Subsidiary { get; } = new();
 
         /// <summary> Скорость передвижения организма </summary>
         protected double _speed;
@@ -66,12 +67,11 @@ namespace alg_Simulation_Evolution.Organisms
                 BodyEllipse.Width = value;
                 BodyEllipse.Height = value;
                 _bodySize = value;
-                BodyColor = ConfiguratorViewElement.GetColorAccordingSpeed(_speed);
+                //BodyColor = ConfiguratorViewElement.GetColorAccordingSpeed(_speed);
 
                 if (_bodySize > DivSizeLimit)
                 {
                     Subsidiary.Add(Divide(Position));
-                    OnDivision?.Invoke();
                 }
             }
         }
