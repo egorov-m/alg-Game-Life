@@ -24,8 +24,8 @@ namespace alg_Simulation_Evolution.Services
 
         public enum DemoMode
         {
-            Automatic,
-            Capture
+            InProcess,
+            OnPause
         }
 
         /// <summary> Кнопка выбора режима демонстрации </summary>
@@ -65,8 +65,17 @@ namespace alg_Simulation_Evolution.Services
             _textBoxDelay.PreviewTextInput += TextBoxDelayOnPreviewTextInput;
             _textBoxDelay.KeyDown += TextBoxDelayOnKeyDown;
 
-            SetDemoMode(DemoMode.Automatic);
+            SetDemoMode(DemoMode.OnPause);
             SetDelay(500);
+        }
+
+        /// <summary> Проверка того можно ли продолжать эволюцию или ждать </summary>
+        public static void Continue()
+        {
+            while (DemonstrationMode == DemoMode.OnPause)
+            {
+                if (DemonstrationMode == DemoMode.InProcess) break;
+            }
         }
 
         /// <summary> Установка режима демонстрации </summary>
@@ -76,7 +85,7 @@ namespace alg_Simulation_Evolution.Services
             DemonstrationMode = demoMode;
 
             _tbBtnDemoModeTitle.Text = demoMode.ToString("G");
-            if (demoMode == DemoMode.Automatic)
+            if (demoMode == DemoMode.InProcess)
             {
                 _tbBtnDemoModeSubtitle.Visibility = Visibility.Visible;
                 _tbBtnDemoModeSubtitle.Text = $"{Delay} ms";
@@ -135,8 +144,8 @@ namespace alg_Simulation_Evolution.Services
         /// <param name="e"></param>
         private void BtnChangeDemoModeOnClick(object sender, RoutedEventArgs e)
         {
-            if (DemonstrationMode == DemoMode.Automatic) SetDemoMode(DemoMode.Capture);
-            else  if (DemonstrationMode == DemoMode.Capture) SetDemoMode(DemoMode.Automatic);
+            if (DemonstrationMode == DemoMode.InProcess) SetDemoMode(DemoMode.OnPause);
+            else  if (DemonstrationMode == DemoMode.OnPause) SetDemoMode(DemoMode.InProcess);
         }
 
         /// <summary> Обработчик нажатия кнопки выполнения шага назад </summary>

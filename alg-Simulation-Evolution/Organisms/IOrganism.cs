@@ -13,9 +13,6 @@ namespace alg_Simulation_Evolution.Organisms
         /// <summary> Лимит размера для деления организма </summary>
         double DivSizeLimit { get; set; }
 
-        /// <summary> Событие деления клетки </summary>
-        //event Func<Point, IOrganism> OnDivision;
-
         /// <summary> Дочерние организмы полученные делением </summary>
         ObservableCollection<IOrganism> Subsidiary { get; }
 

@@ -5,7 +5,6 @@ using alg_Simulation_Evolution.Services;
 using System.Windows.Controls;
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
-using System.Collections.Specialized;
 
 namespace alg_Simulation_Evolution.Organisms
 {
@@ -30,14 +29,11 @@ namespace alg_Simulation_Evolution.Organisms
             get => _divSizeLimit;
             set
             {
-                if (value < IOrganism.DefaultSize) 
+                if (value < IOrganism.DefaultSize)
                     throw new ArgumentOutOfRangeException($"Лимит размера деления не должен быть меньше значения размера по умолчанию: {IOrganism.DefaultSize}.");
                 _divSizeLimit = value;
             }
         }
-
-        /// <summary> Событие деления клетки </summary>
-        //public event Action OnDivision;
 
         /// <summary> Дочерние организмы полученные делением </summary>
         public ObservableCollection<IOrganism> Subsidiary { get; } = new();
@@ -66,6 +62,7 @@ namespace alg_Simulation_Evolution.Organisms
                 if (value < 0) throw new ArgumentOutOfRangeException("Значение размера не может быть отрицательным.");
                 BodyEllipse.Width = value;
                 BodyEllipse.Height = value;
+                BodyEllipse.UpdateLayout();
                 _bodySize = value;
                 //BodyColor = ConfiguratorViewElement.GetColorAccordingSpeed(_speed);
 
@@ -114,7 +111,7 @@ namespace alg_Simulation_Evolution.Organisms
         public Organism(Panel canvas, double size, double speed, double divSizeLimit)
         {
             _canvas = canvas;
-            (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(IOrganism.DefaultSize, IOrganism.DefaultBodyColor, BodyStrokeColor);
+            (BodyGrid, BodyEllipse) = ConfiguratorViewElement.GetGridForBody(size, IOrganism.DefaultBodyColor, BodyStrokeColor);
             DivSizeLimit = divSizeLimit;
             BodyColor = IOrganism.DefaultBodyColor;
 
@@ -143,16 +140,22 @@ namespace alg_Simulation_Evolution.Organisms
         /// <param name="y"> Позиция по Y </param>
         public void MoveOnCanvas(double x, double y)
         {
-            Position = new Point(x, y);
-            BodyGrid.Margin = new Thickness(x - BodyEllipse.Width / 2, y - BodyEllipse.Height / 2, 0, 0);
+            if (!double.IsNaN(x) || !double.IsNaN(y))
+            {
+                Position = new Point(x, y);
+                BodyGrid.Margin = new Thickness(x - BodyEllipse.Width / 2, y - BodyEllipse.Height / 2, 0, 0);
+            }
         }
 
         /// <summary> Переместиться по холсту в точку </summary>
         /// <param name="position"> Новая позиция </param>
         public void MoveOnCanvas(Point position)
         {
-            Position = position;
-            BodyGrid.Margin = new Thickness(position.X - BodyEllipse.Width / 2, position.Y - BodyEllipse.Height / 2, 0, 0);
+            if (!double.IsNaN(position.X) || !double.IsNaN(position.Y))
+            {
+                Position = position;
+                BodyGrid.Margin = new Thickness(position.X - BodyEllipse.Width / 2, position.Y - BodyEllipse.Height / 2, 0, 0);
+            }
         }
 
         /// <summary> Сместиться по холсту на указанное значение </summary>
@@ -160,8 +163,11 @@ namespace alg_Simulation_Evolution.Organisms
         /// <param name="diffY"> Смещение по Y </param>
         public void OffsetOnCanvas(double diffX, double diffY)
         {
-            Position = new Point(BodyGrid.Margin.Left + diffX, BodyGrid.Margin.Top + diffY);
-            MoveOnCanvas(Position);
+            if (!double.IsNaN(diffX) || !double.IsNaN(diffY))
+            {
+                Position = new Point(BodyGrid.Margin.Left + diffX, BodyGrid.Margin.Top + diffY);
+                MoveOnCanvas(Position);
+            }
         }
 
         /// <summary> Поглотить еду </summary>

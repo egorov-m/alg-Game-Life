@@ -151,7 +151,7 @@ namespace alg_Simulation_Evolution.Services
         /// <param name="e"></param>
         private void BtnAddFoodOnClick(object sender, RoutedEventArgs e)
         {
-            AddEssence((canvas, size, speed, divSizeLimit) => new Food(canvas, size / 4), _tbAddFood.Text, OrganismType.Food);
+            AddEssence((canvas, size, speed, divSizeLimit) => new Food(canvas, size / 6), _tbAddFood.Text, OrganismType.Food);
         }
 
         /// <summary> Добавлять сущности </summary>
