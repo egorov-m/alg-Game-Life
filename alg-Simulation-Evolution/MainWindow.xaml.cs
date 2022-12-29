@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using alg_Simulation_Evolution.Data;
 using alg_Simulation_Evolution.EngineOfEvolution;
+using alg_Simulation_Evolution.Graphs;
 using alg_Simulation_Evolution.Services;
 
 namespace alg_Simulation_Evolution
@@ -12,20 +13,21 @@ namespace alg_Simulation_Evolution
     public partial class MainWindow : Window
     {
         private Canvas _canvas;
-        private DataProvider _dataProvider;
+        public static DataProvider DataProvider;
         private SampleBuilderControllerProvider _builderControllerProvider;
         private EvolutionControllerProvider _evolutionControllerProvider;
         private Evolutioner _evolutioner;
+        //public ViewModel ViewModelGraph;
 
         public MainWindow()
         {
             InitializeComponent();
 
             _canvas = Canvas;
-            _dataProvider = new DataProvider();
+            DataProvider = new DataProvider();
             _evolutionControllerProvider = new EvolutionControllerProvider(btnAlgDemoMode, tbDelayAlgStep);
             _builderControllerProvider = new SampleBuilderControllerProvider(_canvas,
-                                                                             _dataProvider,
+                                                                             DataProvider,
                                                                              btnRandomSampling,
                                                                              tbRandomSampling,
                                                                              btnAddOrganisms,
@@ -38,7 +40,11 @@ namespace alg_Simulation_Evolution
                                                                              tbSizeOrganisms,
                                                                              tbSpeedOrganisms,
                                                                              tbDivSizeLimitOrganisms);
-            _evolutioner = new Evolutioner(_dataProvider, _canvas);
+
+            //ViewModelGraph = new ViewModel();
+            //ViewModelGraph.Start();
+
+            _evolutioner = new Evolutioner(DataProvider, _canvas);
         }
     }
 }
