@@ -7,7 +7,8 @@
         xmlns:realTimeGraphX="clr-namespace:RealTimeGraphX.WPF;assembly=RealTimeGraphX.WPF"
         xmlns:graphs="clr-namespace:alg_Simulation_Evolution.Graphs"
         mc:Ignorable="d"
-        Title="Algorithms: Simulation Evolution" 
+        Title="Algorithms: Simulation Evolution"
+        Icon="pack://application:,,,/Resources/favicon.png"
         Height="720" 
         Width="1280"
         Closing="MainWindowOnClosing">

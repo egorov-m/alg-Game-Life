@@ -10,15 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Resources\**" />
-    <EmbeddedResource Remove="Resources\**" />
-    <None Remove="Resources\**" />
-    <Page Remove="Resources\**" />
+    <None Remove="Resources\favicon.png" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RealTimeGraphX.WPF\RealTimeGraphX.WPF.csproj" />
     <ProjectReference Include="..\RealTimeGraphX\RealTimeGraphX.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\favicon.png" />
   </ItemGroup>
 
 </Project>
