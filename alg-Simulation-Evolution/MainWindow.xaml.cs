@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System;
+using System.Windows;
 using System.Windows.Controls;
 using alg_Simulation_Evolution.Data;
 using alg_Simulation_Evolution.EngineOfEvolution;
@@ -41,10 +43,15 @@ namespace alg_Simulation_Evolution
                                                                              tbSpeedOrganisms,
                                                                              tbDivSizeLimitOrganisms);
 
-            //ViewModelGraph = new ViewModel();
-            //ViewModelGraph.Start();
-
             _evolutioner = new Evolutioner(DataProvider, _canvas);
+        }
+
+        /// <summary> Обработчик нажатия кнопки (крестик) закрытия главного окна </summary>
+        /// <param name="sender"> Кнопка </param>
+        /// <param name="e"> Событие клика </param>
+        private void MainWindowOnClosing(object? sender, CancelEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

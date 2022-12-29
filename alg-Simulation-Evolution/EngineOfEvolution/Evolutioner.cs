@@ -50,9 +50,9 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
         /// <summary> Эволюционировать: двигать все живые организмы к пище </summary>
         private async IAsyncEnumerable<(IOrganism, Point)> Evolving()
         {
+            //if (_canvas.Children.Count > _dataProvider.Organisms.Count + _dataProvider.Predators.Count + _dataProvider.Food.Count) yield break;
             foreach (var organism in _dataProvider.Organisms.ToList())
             {
-                if (_canvas.Children.Count > _dataProvider.Organisms.Count + _dataProvider.Predators.Count + _dataProvider.Food.Count) yield break;
                 var (positionNearestFood, distanceNearestFood) = FindNearestFood(organism, _dataProvider.Food);
                 if (positionNearestFood != null)
                 {
@@ -61,9 +61,10 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
                 }
             }
 
+
+            //if (_canvas.Children.Count > _dataProvider.Organisms.Count + _dataProvider.Predators.Count + _dataProvider.Food.Count) yield break;
             foreach (var predator in _dataProvider.Predators.ToList())
             {
-                if (_canvas.Children.Count > _dataProvider.Organisms.Count + _dataProvider.Predators.Count + _dataProvider.Food.Count) yield break;
                 var (positionNearestFood, distanceNearestFood) = 
                     FindNearestFood(predator, 
                                     _dataProvider.Food, 

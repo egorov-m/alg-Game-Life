@@ -9,7 +9,8 @@
         mc:Ignorable="d"
         Title="Algorithms: Simulation Evolution" 
         Height="720" 
-        Width="1280">
+        Width="1280"
+        Closing="MainWindowOnClosing">
     <Window.Resources>
         <Style TargetType="{x:Type TabItem}">
             <Setter Property="Template">
