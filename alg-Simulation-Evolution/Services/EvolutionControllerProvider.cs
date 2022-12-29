@@ -81,12 +81,10 @@ namespace alg_Simulation_Evolution.Services
             {
                 _tbBtnDemoModeSubtitle.Visibility = Visibility.Visible;
                 _tbBtnDemoModeSubtitle.Text = $"{Delay}";
-                //_btnReset.IsEnabled    = false;
             }
             else
             {
                 _tbBtnDemoModeSubtitle.Visibility = Visibility.Collapsed;
-                //_btnReset.IsEnabled    = true;
             }
         }
 
@@ -137,20 +135,6 @@ namespace alg_Simulation_Evolution.Services
             if (DemonstrationMode == DemoMode.InProcess) SetDemoMode(DemoMode.OnPause);
             else  if (DemonstrationMode == DemoMode.OnPause) SetDemoMode(DemoMode.InProcess);
         }
-
-        /// <summary> Обработчик нажатия кнопки выполнения шага назад </summary>
-        /// <param name="sender"> Кнопка </param>
-        /// <param name="e"> Событие клика </param>
-        private void BtnExecuteResetOnClick(object sender, RoutedEventArgs e)
-        {
-            IsReset = true;
-            //_tool.Unload();
-        }
-
-        /// <summary> Обработчик нажатия кнопки выполнения шага вперёд </summary>
-        /// <param name="sender"> Кнопка </param>
-        /// <param name="e"> Событие клика </param>
-        private void BtnExecuteStepForwardOnClick(object sender, RoutedEventArgs e) => IsStepForward = true;
 
         /// <summary> Выполнить сброс панели управления </summary>
         public void Dispose()

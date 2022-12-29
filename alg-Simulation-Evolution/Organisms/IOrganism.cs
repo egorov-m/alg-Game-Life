@@ -13,9 +13,6 @@ namespace alg_Simulation_Evolution.Organisms
         /// <summary> Лимит размера для деления организма </summary>
         double DivSizeLimit { get; set; }
 
-        /// <summary> Дочерние организмы полученные делением </summary>
-        ObservableCollection<IOrganism> Subsidiary { get; }
-
         /// <summary> Размер по умолчанию </summary>
         new static double DefaultSize => 30;
 
@@ -29,7 +26,7 @@ namespace alg_Simulation_Evolution.Organisms
         static double DefaultSpeed => 10;
 
         /// <summary> Скорость передвижения организма </summary>
-        double Speed { get; }
+        double Speed { get; set; }
 
         /// <summary> Деление организма на два </summary>
         /// /// <param name="position"> Позиция для установки нового организма </param>

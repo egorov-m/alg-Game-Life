@@ -30,7 +30,7 @@ namespace alg_Simulation_Evolution.Organisms
         public override IOrganism Divide(Point position)
         {
             BodySize /= 2;
-            Speed *= 2;
+            Speed *= 1.5;
             //var tmp = DivSizeLimit / 2;
             //DivSizeLimit = tmp > IOrganism.DefaultSize ? tmp : IOrganism.DefaultSize;
 

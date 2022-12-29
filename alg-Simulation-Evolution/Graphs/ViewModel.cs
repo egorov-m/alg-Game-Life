@@ -69,15 +69,18 @@ namespace alg_Simulation_Evolution.Graphs
             Start();
         }
 
-        private int GetCountByColor(double speed)
+        /// <summary> Получить количество элементов на основе скорости </summary>
+        /// <param name="speed1"> Верхний предел </param>
+        /// <param name="speed2"> Нижний предел </param>
+        private int GetCountBySpeed(double speed1, double speed2 = double.MinValue)
         {
             var count = 0;
             var dataProvider = MainWindow.DataProvider;
             if (dataProvider != null)
             {
-                count += dataProvider.Organisms.ToList().Count(organism => organism.Speed > speed && organism.Speed < speed + 5);
+                count += dataProvider.Organisms.ToList().Count(organism => organism.Speed <= speed1 && organism.Speed >= speed2);
 
-                count += dataProvider.Predators.ToList().Count(organism => organism.Speed > speed && organism.Speed < speed + 5);
+                count += dataProvider.Predators.ToList().Count(organism => organism.Speed <= speed1 && organism.Speed >= speed2);
             }
 
             return count;
@@ -90,14 +93,15 @@ namespace alg_Simulation_Evolution.Graphs
             {
                 while (true)
                 {
+                    // Выделение групп на основе попадания скоростей в промежуток
                     var yy = new List<DoubleDataPoint>()
                     {
-                        GetCountByColor(-3),
-                        GetCountByColor(6),
-                        GetCountByColor(16),
-                        GetCountByColor(21),
-                        GetCountByColor(31),
-                        GetCountByColor(50)
+                        GetCountBySpeed(5),
+                        GetCountBySpeed(15, 6),
+                        GetCountBySpeed(20, 16),
+                        GetCountBySpeed(30, 21),
+                        GetCountBySpeed(40, 31),
+                        GetCountBySpeed(double.MaxValue, 41)
                     };
 
                     var x = DateTime.Now.TimeOfDay;
@@ -110,7 +114,6 @@ namespace alg_Simulation_Evolution.Graphs
                         x,
                         x
                     };
-
 
                     Controller.PushData(xx, yy);
 

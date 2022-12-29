@@ -4,9 +4,7 @@ using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media.Converters;
 using alg_Simulation_Evolution.Data;
 using alg_Simulation_Evolution.Organisms;
 
@@ -80,48 +78,49 @@ namespace alg_Simulation_Evolution.Services
             _canvas = canvas;
             _dataProvider = dataProvider;
 
+            // Добавление случайной выборки
             _btnRandomSampling = btnRandomSampling;
             _btnRandomSampling.Click += BtnRandomSamplingOnClick;
             _tbRandomSampling = tbRandomSampling;
             _tbRandomSampling.PreviewTextInput += TextBoxCountElementsOnPreviewTextInput;
             _tbRandomSampling.KeyDown += TextBoxOnKeyDown;
 
-
+            // Добавление обычных организмов
             _btnAddOrganisms = btnAddOrganisms;
             _btnAddOrganisms.Click += BtnAddOrganismsOnClick;
             _tbAddOrganisms = tbAddOrganisms;
             _tbAddOrganisms.PreviewTextInput += TextBoxCountElementsOnPreviewTextInput;
             _tbAddOrganisms.KeyDown += TextBoxOnKeyDown;
 
-
+            // Добавление хищников
             _btnAddPredators = btnAddPredators;
             _btnAddPredators.Click += BtnAddPredatorsOnClick;
             _tbAddPredators = tbAddPredators;
             _tbAddPredators.PreviewTextInput += TextBoxCountElementsOnPreviewTextInput;
             _tbAddPredators.KeyDown += TextBoxOnKeyDown;
 
-
+            // Добавление пищи
             _btnAddFood = btnAddFood;
             _btnAddFood.Click += BtnAddFoodOnClick;
             _tbAddFood = tbAddFood;
             _tbAddFood.PreviewTextInput += TextBoxCountElementsOnPreviewTextInput;
             _tbAddFood.KeyDown += TextBoxOnKeyDown;
 
-
+            // Сбрасывание выборки
             _btnResetSelection = btnResetSelection;
             _btnResetSelection.Click += BtnResetSelectionOnClick;
 
-
+            // Размер добавляемых организмов
             _tbSizeOrganisms = tbSizeOrganisms;
             _tbSizeOrganisms.PreviewTextInput += TextBoxParamsElementsOnPreviewTextInput;
             _tbSizeOrganisms.KeyDown += TextBoxOnKeyDown;
 
-
+            // Скорость добавляемых организмов
             _tbSpeedOrganisms = tbSpeedOrganisms;
             _tbSpeedOrganisms.PreviewTextInput += TextBoxParamsElementsOnPreviewTextInput;
             _tbSpeedOrganisms.KeyDown += TextBoxOnKeyDown;
 
-
+            // Лимит размера деления организмов
             _tbDivSizeLimitOrganisms = tbDivSizeLimitOrganisms;
             _tbDivSizeLimitOrganisms.PreviewTextInput += TextBoxParamsElementsOnPreviewTextInput;
             _tbDivSizeLimitOrganisms.KeyDown += TextBoxOnKeyDown;
@@ -176,7 +175,6 @@ namespace alg_Simulation_Evolution.Services
                     foreach (var position in positions)
                     {
                         var organism = (IOrganism) essence(_canvas, size, speed, divSizeLimit);
-                        organism.Subsidiary.CollectionChanged += AddOrganismOnCollectionChanged;
                         _dataProvider.Organisms.Add(organism);
                         organism.SetPosition(position);
                     }
@@ -185,7 +183,6 @@ namespace alg_Simulation_Evolution.Services
                     foreach (var position in positions)
                     {
                         var organism = (IPredator) essence(_canvas, size, speed, divSizeLimit);
-                        organism.Subsidiary.CollectionChanged += AddOrganismOnCollectionChanged;
                         _dataProvider.Predators.Add(organism);
                         organism.SetPosition(position);
                     }
@@ -198,29 +195,6 @@ namespace alg_Simulation_Evolution.Services
                         organism.SetPosition(position);
                     }
                     break;
-            }
-        }
-
-        private void AddOrganismOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                if (sender is IList<IOrganism> list)
-                {
-                    if (list.Count > 0)
-                    {
-                        var item = list[^1];
-
-                        if (item is IPredator predator)
-                        {
-                            _dataProvider.Predators.Add(predator);
-                        }
-                        else
-                        {
-                            _dataProvider.Organisms.Add(item);
-                        }
-                    }
-                }
             }
         }
 
@@ -259,7 +233,7 @@ namespace alg_Simulation_Evolution.Services
         /// <summary> Обработчик нажатия кнопки случайной генерации выборки </summary>
         /// <param name="sender"> Кнопка </param>
         /// <param name="e"> Событие клика </param>
-        private void BtnRandomSamplingOnClick(object sender, RoutedEventArgs e)
+        private async void BtnRandomSamplingOnClick(object sender, RoutedEventArgs e)
         {
             if (_random.NextDouble() >= 0.5)
             {

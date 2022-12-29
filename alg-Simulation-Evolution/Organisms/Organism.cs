@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Windows;
 using alg_Simulation_Evolution.Services;
 using System.Windows.Controls;
@@ -35,9 +34,6 @@ namespace alg_Simulation_Evolution.Organisms
             }
         }
 
-        /// <summary> Дочерние организмы полученные делением </summary>
-        public ObservableCollection<IOrganism> Subsidiary { get; } = new();
-
         /// <summary> Скорость передвижения организма </summary>
         protected double _speed;
 
@@ -67,7 +63,16 @@ namespace alg_Simulation_Evolution.Organisms
 
                 if (_bodySize > DivSizeLimit)
                 {
-                    Subsidiary.Add(Divide(Position));
+                    //Subsidiary.Add(Divide(Position));
+                    var organism = Divide(Position);
+                    if (organism is IPredator predator)
+                    {
+                        MainWindow.DataProvider.Predators.Add(predator);
+                    }
+                    else
+                    {
+                        MainWindow.DataProvider.Organisms.Add(organism);
+                    }
                 }
             }
         }
@@ -126,7 +131,7 @@ namespace alg_Simulation_Evolution.Organisms
         /// <summary> Деление организма на два </summary>
         public virtual IOrganism Divide(Point position)
         {
-            Speed *= 2;
+            Speed *= 1.5;
             BodySize /= 2;
             //var tmp = DivSizeLimit / 2;
             //DivSizeLimit = tmp > IOrganism.DefaultSize ? tmp : IOrganism.DefaultSize;

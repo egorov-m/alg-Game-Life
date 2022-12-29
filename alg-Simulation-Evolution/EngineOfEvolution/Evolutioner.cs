@@ -32,9 +32,22 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
 
                 await foreach (var tuple in Evolving())
                 {
-                    await Task.Run(() => Thread.Sleep(EvolutionControllerProvider.Delay / 1000)); // 1000 - подобранное значение, оптимального для визуального восприятия
-                    if (tuple.Item1.Position != tuple.Item2) tuple.Item1.MoveOnCanvas(tuple.Item2);
+                    if (tuple.Item1.Position != tuple.Item2)
+                    {
+                         tuple.Item1.BodySize -= tuple.Item1.BodySize / 4000; // Уменьшаются от движения
+                         tuple.Item1.Speed += tuple.Item1.Speed / 4000; // скорость, соответственно также изменяется
+
+                         tuple.Item1.MoveOnCanvas(tuple.Item2);
+
+                         if (tuple.Item1.BodySize <= 8) // Организмы умирают, если уменьшаются слишком сильно
+                         {
+                             _canvas.Children.Remove(tuple.Item1.BodyGrid);
+                             if (tuple.Item1 is IPredator predator) _dataProvider.Predators.Remove(predator);
+                             else _dataProvider.Organisms.Remove(tuple.Item1);
+                         }
+                    }
                 }
+                await Task.Run(() => Thread.Sleep(EvolutionControllerProvider.Delay / 300)); // 300 - подобранное значение, оптимального для визуального восприятия
 
             }
         }
@@ -50,7 +63,6 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
         /// <summary> Эволюционировать: двигать все живые организмы к пище </summary>
         private async IAsyncEnumerable<(IOrganism, Point)> Evolving()
         {
-            //if (_canvas.Children.Count > _dataProvider.Organisms.Count + _dataProvider.Predators.Count + _dataProvider.Food.Count) yield break;
             foreach (var organism in _dataProvider.Organisms.ToList())
             {
                 var (positionNearestFood, distanceNearestFood) = FindNearestFood(organism, _dataProvider.Food);
@@ -61,8 +73,6 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
                 }
             }
 
-
-            //if (_canvas.Children.Count > _dataProvider.Organisms.Count + _dataProvider.Predators.Count + _dataProvider.Food.Count) yield break;
             foreach (var predator in _dataProvider.Predators.ToList())
             {
                 var (positionNearestFood, distanceNearestFood) = 
@@ -120,7 +130,7 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
         /// <param name="organism"> Организм </param>
         private double GetShiftSize(IOrganism organism)
         {
-            return organism.Speed / 27; // 27 - подобранное значение, оптимально для визуального восприятия
+            return organism.Speed / 50; // 50 - подобранное значение, оптимально для визуального восприятия
         }
 
         /// <summary>
