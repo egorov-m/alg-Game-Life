@@ -158,7 +158,8 @@
 
                 <Grid Grid.Row="0" VerticalAlignment="Stretch" Background="#1f1f1f">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0"/> <!-- 0 - временно, чтобы скрыть лишнюю панель !-->
+                        <ColumnDefinition Width="0"/>
+                        <!-- 0 - временно, чтобы скрыть лишнюю панель !-->
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
@@ -204,16 +205,45 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Foreground="#d6d6d6" Padding="0 0 3 0">Statistics</TextBlock>
+                            <TextBlock Grid.Column="0" Foreground="#d6d6d6" Padding="0 0 3 0" Text="Statistics"/>
                             <Separator Grid.Column="1" Background="#7160e8" VerticalAlignment="Center"/>
                         </Grid>
                         <Separator DockPanel.Dock="Top" Background="#464646"/>
 
-                        <graphs:WpfGraphControl Controller="{Binding Controller}">
-                            <graphs:WpfGraphControl.DataContext>
-                                <graphs:ViewModel/>
-                            </graphs:WpfGraphControl.DataContext>
-                        </graphs:WpfGraphControl>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="8*"/>
+                                <ColumnDefinition Width="155*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="163*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <DockPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+                                <graphs:WpfGraphControl Controller="{Binding Controller}">
+                                    <graphs:WpfGraphControl.DataContext>
+                                        <graphs:ViewModelSpeedGraphs/>
+                                    </graphs:WpfGraphControl.DataContext>
+                                </graphs:WpfGraphControl>
+                            </DockPanel>
+
+                            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Padding="0 0 3 0" Foreground="#d6d6d6" Text="График количества организмов по их скоростям"/>
+
+                            <TextBlock Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" Padding="0 0 3 0" Foreground="#d6d6d6" Text="График количества организмов по категории хищник / не хищник"/>
+
+                            <GridSplitter Grid.Column="2" Grid.Row="1" ShowsPreview="True" Width="3" HorizontalAlignment="Center" Background="#464646"/>
+
+                            <DockPanel Grid.Column="3" Grid.Row="1">
+                                <graphs:WpfGraphControl Controller="{Binding Controller}">
+                                    <graphs:WpfGraphControl.DataContext>
+                                        <graphs:ViewModelPredatorGraphs/>
+                                    </graphs:WpfGraphControl.DataContext>
+                                </graphs:WpfGraphControl>
+                            </DockPanel>
+                        </Grid>
 
                     </DockPanel>
                 </Border>
@@ -267,7 +297,7 @@
                                 <TextBox x:Name="tbAddOrganisms" DockPanel.Dock="Right" Text="10" Background="#424242" Foreground="#d6d6d6"/>
                             </DockPanel>
                         </Border>
-                        
+
                         <Separator Background="#464646" BorderThickness="1"/>
 
                         <Border Background="#464646" BorderThickness="0" Padding="3 3 3 3">
@@ -287,7 +317,7 @@
                                 <TextBox x:Name="tbAddPredators" DockPanel.Dock="Right" Text="10" Background="#424242" Foreground="#d6d6d6"/>
                             </DockPanel>
                         </Border>
-                        
+
                         <Separator Background="#464646" BorderThickness="1"/>
 
                         <Border Background="#464646" BorderThickness="0" Padding="3 3 3 3">
@@ -307,7 +337,7 @@
                                 <TextBox x:Name="tbAddFood" DockPanel.Dock="Right" Text="10" Background="#424242" Foreground="#d6d6d6"/>
                             </DockPanel>
                         </Border>
-                        
+
                         <Separator Background="#464646" BorderThickness="1"/>
 
                         <Border Background="#464646" BorderThickness="0" Padding="3 3 3 3">
@@ -320,7 +350,7 @@
                                 </Button.ToolTip>
                             </Button>
                         </Border>
-                        
+
                         <Separator Background="#464646" BorderThickness="1"/>
 
                         <Border Background="#464646" BorderThickness="0" Padding="3 3 3 3">
@@ -380,7 +410,7 @@
                                         <Button.Content>
                                             <StackPanel>
                                                 <TextBlock Text="Автоматически пополнять"/>
-                                                <TextBlock Text="1000" FontSize="7" TextAlignment="Center" Foreground="#bdbdbd"/>
+                                                <TextBlock Text="1000 ms" FontSize="7" TextAlignment="Center" Foreground="#bdbdbd"/>
                                             </StackPanel>
                                         </Button.Content>
                                         <Button.ToolTip>

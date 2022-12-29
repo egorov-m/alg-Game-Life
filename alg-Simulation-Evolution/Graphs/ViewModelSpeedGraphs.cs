@@ -9,12 +9,12 @@ using RealTimeGraphX.WPF;
 
 namespace alg_Simulation_Evolution.Graphs
 {
-    public class ViewModel
+    public class ViewModelSpeedGraphs
     {
         //Graph controller with timespan as X axis and double as Y.
         public WpfGraphController<TimeSpanDataPoint, DoubleDataPoint> Controller { get; set; }
 
-        public ViewModel()
+        public ViewModelSpeedGraphs()
         {
             Controller = new WpfGraphController<TimeSpanDataPoint, DoubleDataPoint>();
             Controller.Range.MinimumY = 0;

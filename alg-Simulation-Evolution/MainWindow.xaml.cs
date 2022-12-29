@@ -19,7 +19,7 @@ namespace alg_Simulation_Evolution
         private SampleBuilderControllerProvider _builderControllerProvider;
         private EvolutionControllerProvider _evolutionControllerProvider;
         private Evolutioner _evolutioner;
-        //public ViewModel ViewModelGraph;
+        //public ViewModelSpeedGraphs ViewModelGraph;
 
         public MainWindow()
         {
