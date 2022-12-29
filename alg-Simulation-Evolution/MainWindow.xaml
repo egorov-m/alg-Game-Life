@@ -369,28 +369,55 @@
                         <Border Background="#464646" BorderThickness="0" Padding="3 3 3 3">
                             <DockPanel>
                                 <StackPanel DockPanel.Dock="Top">
-                                    <TextBlock Text="Управление эволюцией" Foreground="#d6d6d6" TextAlignment="Center"/>
-                                    <!--<TextBlock FontSize="10" Foreground="#d6d6d6" TextAlignment="Center">
-                                        <TextBlock.Text>смена эпох</TextBlock.Text>
-                                        <TextBlock.ToolTip>
-                                            <ToolTip Background="#424242" Foreground="#d6d6d6">
-                                                <TextBlock Text="Появление пищи для организмов"/>
-                                            </ToolTip>
-                                        </TextBlock.ToolTip>
-                                    </TextBlock>-->
+                                    <TextBlock Text="Автоматическое наполнение мира" Foreground="#d6d6d6" TextAlignment="Center"/>
                                     <Separator Background="#464646"/>
                                 </StackPanel>
                                 <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="10"></ColumnDefinition>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="10"></ColumnDefinition>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <!--<Button x:Name="btnAlgReset" Width="60"  Grid.Column="0" Content="Reset" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0" Grid.ColumnSpan="2"/>-->
-                                    <Button x:Name="btnAlgDemoMode" Grid.Column="3" Width="175" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0">
+                                    <Button x:Name="btnAutoAddSampling" Grid.Column="0" Width="175" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0">
+                                        <Button.Content>
+                                            <StackPanel>
+                                                <TextBlock Text="Автоматически пополнять"/>
+                                                <TextBlock Text="1000" FontSize="7" TextAlignment="Center" Foreground="#bdbdbd"/>
+                                            </StackPanel>
+                                        </Button.Content>
+                                        <Button.ToolTip>
+                                            <ToolTip Background="#424242" Foreground="#d6d6d6">
+                                                <TextBlock Text="Наполнение мира организмами автоматически / вручную"/>
+                                            </ToolTip>
+                                        </Button.ToolTip>
+                                    </Button>
+                                </Grid>
+                                <Separator DockPanel.Dock="Top" Background="Transparent"/>
+                                <DockPanel DockPanel.Dock="Bottom">
+                                    <TextBlock DockPanel.Dock="Left" Text="Промежуток:" Foreground="#d6d6d6">
+                                        <TextBlock.ToolTip>
+                                            <ToolTip Background="#424242" Foreground="#d6d6d6">
+                                                <TextBlock Text="Время через которое производить пополнение в миллисекундах."/>
+                                            </ToolTip>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+                                    <Separator DockPanel.Dock="Left" Width="5" Background="Transparent"/>
+                                    <TextBox x:Name="tbAutoAddSampling" DockPanel.Dock="Right" Text="1000" Background="#424242" Foreground="#d6d6d6"/>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+
+                        <Separator Background="#464646" BorderThickness="1"/>
+
+                        <Border Background="#464646" BorderThickness="0" Padding="3 3 3 3">
+                            <DockPanel>
+                                <StackPanel DockPanel.Dock="Top">
+                                    <TextBlock Text="Управление эволюцией" Foreground="#d6d6d6" TextAlignment="Center"/>
+                                    <Separator Background="#464646"/>
+                                </StackPanel>
+                                <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="btnAlgDemoMode" Grid.Column="0" Width="175" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0">
                                         <Button.Content>
                                             <StackPanel>
                                                 <TextBlock Text="Эволюция в процессе"/>
@@ -403,7 +430,6 @@
                                             </ToolTip>
                                         </Button.ToolTip>
                                     </Button>
-                                    <!--<Button x:Name="btnAlgStepForward" IsEnabled="False" Width="60" Grid.Column="5" Content="Forward" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0"/>-->
                                 </Grid>
                                 <Separator DockPanel.Dock="Top" Background="Transparent"/>
                                 <DockPanel DockPanel.Dock="Bottom">
