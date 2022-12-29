@@ -230,9 +230,9 @@
                                 </graphs:WpfGraphControl>
                             </DockPanel>
 
-                            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Padding="0 0 3 0" Foreground="#d6d6d6" Text="График количества организмов по их скоростям"/>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Foreground="#d6d6d6" Text=" График количества организмов по их скоростям"/>
 
-                            <TextBlock Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" Padding="0 0 3 0" Foreground="#d6d6d6" Text="График количества организмов по категории хищник / не хищник"/>
+                            <TextBlock Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" Foreground="#d6d6d6" Text=" График количества организмов по категории хищник / не хищник"/>
 
                             <GridSplitter Grid.Column="2" Grid.Row="1" ShowsPreview="True" Width="3" HorizontalAlignment="Center" Background="#464646"/>
 
@@ -247,7 +247,6 @@
 
                     </DockPanel>
                 </Border>
-
             </Grid>
 
             <GridSplitter Grid.Column="1" ShowsPreview="True" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="#464646"/>
@@ -409,8 +408,8 @@
                                     <Button x:Name="btnAutoAddSampling" Grid.Column="0" Width="175" Height="30" Background="#424242" Foreground="#d6d6d6" Padding="5 0 5 0">
                                         <Button.Content>
                                             <StackPanel>
-                                                <TextBlock Text="Автоматически пополнять"/>
-                                                <TextBlock Text="1000 ms" FontSize="7" TextAlignment="Center" Foreground="#bdbdbd"/>
+                                                <TextBlock x:Name="tbBtnAutoAddSampling" Text="Автоматически пополнять"/>
+                                                <TextBlock x:Name="tbBtnAutoAddSamplingSubtitle" Text="1000 ms" FontSize="7" TextAlignment="Center" Foreground="#bdbdbd"/>
                                             </StackPanel>
                                         </Button.Content>
                                         <Button.ToolTip>

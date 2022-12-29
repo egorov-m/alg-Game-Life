@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using alg_Simulation_Evolution.Data;
 using alg_Simulation_Evolution.Organisms;
 
@@ -20,36 +21,56 @@ namespace alg_Simulation_Evolution.Services
         private readonly DataProvider _dataProvider;
 
         /// <summary> Кнопка случайной генерации выборки </summary>
-        private Button _btnRandomSampling;
+        private readonly Button _btnRandomSampling;
+
         /// <summary> Поле ввода количество элементов для случайной генерации выборки </summary>
-        private TextBox _tbRandomSampling;
+        private readonly TextBox _tbRandomSampling;
 
         /// <summary> Кнопка добавления обычных организмов в выборку </summary>
-        private Button _btnAddOrganisms;
+        private readonly Button _btnAddOrganisms;
+
         /// <summary> Поле ввода количества добавляемых обычных организмов в выборку </summary>
-        private TextBox _tbAddOrganisms;
+        private readonly TextBox _tbAddOrganisms;
 
         /// <summary> Кнопка добавления хищников в выборку </summary>
-        private Button _btnAddPredators;
+        private readonly Button _btnAddPredators;
+
         /// <summary> Поле ввода количества добавляемых хищников в выборку </summary>
-        private TextBox _tbAddPredators;
+        private readonly TextBox _tbAddPredators;
 
-        /// <summary> Кнопка добавления пищи в выборку </summary>
-        private Button _btnAddFood;
         /// <summary> Поле ввода количества добавляемых единиц пищи в выборку </summary>
-        private TextBox _tbAddFood;
-
-        /// <summary> Кнопка сброса собранной выборки </summary>
-        private Button _btnResetSelection;
+        private readonly TextBox _tbAddFood;
 
         /// <summary> Поле ввода размера для добавляемых организмов </summary>
-        private TextBox _tbSizeOrganisms;
+        private readonly TextBox _tbSizeOrganisms;
 
         /// <summary> Поле ввода скорости для добавляемых организмов </summary>
-        private TextBox _tbSpeedOrganisms;
+        private readonly TextBox _tbSpeedOrganisms;
 
         /// <summary> Поле ввода лимита размера для деления добавляемых организмов </summary>
-        private TextBox _tbDivSizeLimitOrganisms;
+        private readonly TextBox _tbDivSizeLimitOrganisms;
+
+        /// <summary> Кнопка переключения режима автоматического пополнения </summary>
+        private readonly Button _btnAutoAddSampling;
+
+        /// <summary> Заголовок кнопки переключения режима автоматического пополнения </summary>
+        private readonly TextBlock _tbBtnAutoAddSampling;
+
+        /// <summary> Подзаголовок кнопки переключения режима автоматического пополнения </summary>
+        private readonly TextBlock _tbBtnAutoAddSamplingSubtitle;
+
+        /// <summary> Текстовое поле ввода промежутка между автоматическими пополнениями выборки </summary>
+        private readonly TextBox _tbAutoAddSampling;
+
+        /// <summary> Текущий режим пополнения </summary>
+        private AutoSamplingMode _autoSamplingMode;
+
+        /// <summary> Включён ли режим автоматического пополнения </summary>
+        private enum AutoSamplingMode
+        {
+            Off,
+            On
+        }
 
         /// <summary> Регулярное выражение для проверки соответствия вводимого количества элементов </summary>
         private readonly Regex _regexCountElements = new (@"[0-9]+");
@@ -73,7 +94,11 @@ namespace alg_Simulation_Evolution.Services
                                                Button  btnResetSelection,
                                                TextBox tbSizeOrganisms,
                                                TextBox tbSpeedOrganisms,
-                                               TextBox tbDivSizeLimitOrganisms)
+                                               TextBox tbDivSizeLimitOrganisms,
+                                               Button btnAutoAddSampling,
+                                               TextBlock tbBtnAutoAddSampling,
+                                               TextBlock tbBtnAutoAddSamplingSubtitle,
+                                               TextBox tbAutoAddSampling)
         {
             _canvas = canvas;
             _dataProvider = dataProvider;
@@ -100,15 +125,13 @@ namespace alg_Simulation_Evolution.Services
             _tbAddPredators.KeyDown += TextBoxOnKeyDown;
 
             // Добавление пищи
-            _btnAddFood = btnAddFood;
-            _btnAddFood.Click += BtnAddFoodOnClick;
+            btnAddFood.Click += BtnAddFoodOnClick;
             _tbAddFood = tbAddFood;
             _tbAddFood.PreviewTextInput += TextBoxCountElementsOnPreviewTextInput;
             _tbAddFood.KeyDown += TextBoxOnKeyDown;
 
             // Сбрасывание выборки
-            _btnResetSelection = btnResetSelection;
-            _btnResetSelection.Click += BtnResetSelectionOnClick;
+            btnResetSelection.Click += BtnResetSelectionOnClick;
 
             // Размер добавляемых организмов
             _tbSizeOrganisms = tbSizeOrganisms;
@@ -124,6 +147,83 @@ namespace alg_Simulation_Evolution.Services
             _tbDivSizeLimitOrganisms = tbDivSizeLimitOrganisms;
             _tbDivSizeLimitOrganisms.PreviewTextInput += TextBoxParamsElementsOnPreviewTextInput;
             _tbDivSizeLimitOrganisms.KeyDown += TextBoxOnKeyDown;
+
+            // Автоматическое добавление элементов в выборку
+            _btnAutoAddSampling = btnAutoAddSampling;
+            _btnAutoAddSampling.Click += BtnAutoAddSamplingOnClick;
+            _tbBtnAutoAddSamplingSubtitle = tbBtnAutoAddSamplingSubtitle;
+            _tbBtnAutoAddSampling = tbBtnAutoAddSampling;
+
+            // Промежуток добавления элементов в выборку
+            _tbAutoAddSampling = tbAutoAddSampling;
+            _tbAutoAddSampling.PreviewTextInput += TextBoxCountElementsOnPreviewTextInput;
+            _tbAutoAddSampling.KeyDown += TextBoxAutoSamplingTimeOnKeyDown;
+
+            // Автоматическое пополнение по умолчанию отключено
+            SetAutoSamplingMode(AutoSamplingMode.Off);
+            _tbAutoAddSampling.Text = "1000";
+            AutoAddSampling();
+        }
+
+        /// <summary> Обработка нажатия кнопки переключения режима пополнения выборки </summary>
+        /// <param name="sender"> Кнопка </param>
+        /// <param name="e"> Событие клика </param>
+        private void BtnAutoAddSamplingOnClick(object sender, RoutedEventArgs e)
+        {
+            if (_autoSamplingMode == AutoSamplingMode.On) SetAutoSamplingMode(AutoSamplingMode.Off);
+            else if (_autoSamplingMode == AutoSamplingMode.Off) SetAutoSamplingMode(AutoSamplingMode.On);
+        }
+
+        /// <summary> Автоматическое добавление выборки </summary>
+        private async void AutoAddSampling()
+        {
+            await Task.Run(() => { while (_autoSamplingMode != AutoSamplingMode.On) {} }); // Ожидание того, пока не включат автоматическое пополнение
+            BtnAddOrganismsOnClick(null, null);
+            BtnAddPredatorsOnClick(null, null);
+            BtnAddFoodOnClick(null, null);
+            var sleepTime = ParseInt(_tbAutoAddSampling.Text);
+            await Task.Run(() => Thread.Sleep(sleepTime));
+            
+            AutoAddSampling();
+        }
+
+        /// <summary> Установка режима наполнения выборки </summary>
+        /// <param name="autoSamplingMode"> Включён ли автоматический </param>
+        private void SetAutoSamplingMode(AutoSamplingMode autoSamplingMode)
+        {
+            _autoSamplingMode = autoSamplingMode;
+
+            _tbBtnAutoAddSampling.Text = autoSamplingMode == AutoSamplingMode.On ? "Автоматическое пополнение" : "Пополнение в ручную";
+            if (autoSamplingMode == AutoSamplingMode.On)
+            {
+                _tbBtnAutoAddSamplingSubtitle.Visibility = Visibility.Visible;
+                _btnAutoAddSampling.BorderBrush = new SolidColorBrush(IOrganism.DefaultBodyColor);
+                _tbBtnAutoAddSamplingSubtitle.Text = $"{_tbAutoAddSampling.Text} ms";
+                _tbAutoAddSampling.IsEnabled = false;
+            }
+            else
+            {
+                _btnAutoAddSampling.BorderBrush = new SolidColorBrush(IOrganism.BodyStrokeColor);
+                _tbBtnAutoAddSamplingSubtitle.Visibility = Visibility.Collapsed;
+                _tbAutoAddSampling.IsEnabled = true;
+            }
+        }
+
+        /// <summary> Обработка нажатия кнопки Enter и установка введённой задержки </summary>
+        /// <param name="sender"> Текстовое поле для ввода задержки </param>
+        /// <param name="e"> Событие нажатия клавиши </param>
+        private void TextBoxAutoSamplingTimeOnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return || e.Key == Key.Enter)
+            {
+                Keyboard.ClearFocus();
+                if (_tbAutoAddSampling.Text == "")
+                {
+                    _tbAutoAddSampling.Text = "1000";
+                }
+
+                _tbBtnAutoAddSamplingSubtitle.Text = $"{_tbAutoAddSampling.Text} ms";
+            }
         }
 
         /// <summary> Кнопка сброса выборки </summary>

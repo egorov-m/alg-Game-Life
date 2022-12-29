@@ -1,9 +1,11 @@
-﻿using System;
+﻿using alg_Simulation_Evolution.Organisms;
+using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace alg_Simulation_Evolution.Services
 {
@@ -80,11 +82,13 @@ namespace alg_Simulation_Evolution.Services
             if (demoMode == DemoMode.InProcess)
             {
                 _tbBtnDemoModeSubtitle.Visibility = Visibility.Visible;
+                _btnDemoMode.BorderBrush = new SolidColorBrush(IOrganism.DefaultBodyColor);
                 _tbBtnDemoModeSubtitle.Text = $"{Delay}";
             }
             else
             {
                 _tbBtnDemoModeSubtitle.Visibility = Visibility.Collapsed;
+                _btnDemoMode.BorderBrush = new SolidColorBrush(IOrganism.BodyStrokeColor);
             }
         }
 

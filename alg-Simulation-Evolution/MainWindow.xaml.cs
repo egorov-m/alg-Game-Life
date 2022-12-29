@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using alg_Simulation_Evolution.Data;
 using alg_Simulation_Evolution.EngineOfEvolution;
-using alg_Simulation_Evolution.Graphs;
 using alg_Simulation_Evolution.Services;
 
 namespace alg_Simulation_Evolution
@@ -19,7 +18,6 @@ namespace alg_Simulation_Evolution
         private SampleBuilderControllerProvider _builderControllerProvider;
         private EvolutionControllerProvider _evolutionControllerProvider;
         private Evolutioner _evolutioner;
-        //public ViewModelSpeedGraphs ViewModelGraph;
 
         public MainWindow()
         {
@@ -41,7 +39,11 @@ namespace alg_Simulation_Evolution
                                                                              btnResetSelection,
                                                                              tbSizeOrganisms,
                                                                              tbSpeedOrganisms,
-                                                                             tbDivSizeLimitOrganisms);
+                                                                             tbDivSizeLimitOrganisms,
+                                                                             btnAutoAddSampling,
+                                                                             tbBtnAutoAddSampling,
+                                                                             tbBtnAutoAddSamplingSubtitle,
+                                                                             tbAutoAddSampling);
 
             _evolutioner = new Evolutioner(DataProvider, _canvas);
         }
