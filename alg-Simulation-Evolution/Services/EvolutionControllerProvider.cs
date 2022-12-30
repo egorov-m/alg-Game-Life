@@ -52,24 +52,19 @@ namespace alg_Simulation_Evolution.Services
                 if (sp.Children[1] is TextBlock tb2) _tbBtnDemoModeSubtitle = tb2;
             }
 
-            _textBoxDelay        = textBoxDelay;
-
-            _btnDemoMode.Click    += BtnChangeDemoModeOnClick;
-
+            _btnDemoMode.Click             += BtnChangeDemoModeOnClick;
+            _textBoxDelay                   = textBoxDelay;
             _textBoxDelay.PreviewTextInput += TextBoxDelayOnPreviewTextInput;
-            _textBoxDelay.KeyDown += TextBoxDelayOnKeyDown;
+            _textBoxDelay.KeyDown          += TextBoxDelayOnKeyDown;
 
             SetDemoMode(DemoMode.OnPause);
             SetDelay(500);
         }
 
         /// <summary> Проверка того можно ли продолжать эволюцию или ждать </summary>
-        public static void Continue()
+        public static bool Continue()
         {
-            while (DemonstrationMode == DemoMode.OnPause)
-            {
-                if (DemonstrationMode == DemoMode.InProcess) break;
-            }
+            return DemonstrationMode == DemoMode.InProcess;
         }
 
         /// <summary> Установка режима демонстрации </summary>

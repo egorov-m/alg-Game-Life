@@ -193,7 +193,7 @@ namespace alg_Simulation_Evolution.Services
         {
             _autoSamplingMode = autoSamplingMode;
 
-            _tbBtnAutoAddSampling.Text = autoSamplingMode == AutoSamplingMode.On ? "Автоматическое пополнение" : "Пополнение в ручную";
+            _tbBtnAutoAddSampling.Text = autoSamplingMode == AutoSamplingMode.On ? "Автоматическое пополнение" : "Пополнение вручную";
             if (autoSamplingMode == AutoSamplingMode.On)
             {
                 _tbBtnAutoAddSamplingSubtitle.Visibility = Visibility.Visible;

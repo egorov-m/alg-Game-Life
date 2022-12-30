@@ -28,8 +28,6 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
         {
             while (true)
             {
-                await Task.Run(() => EvolutionControllerProvider.Continue());
-
                 await foreach (var tuple in Evolving())
                 {
                     if (tuple.Item1.Position != tuple.Item2)
@@ -47,8 +45,8 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
                          }
                     }
                 }
-                await Task.Run(() => Thread.Sleep(EvolutionControllerProvider.Delay / 300)); // 300 - подобранное значение, оптимального для визуального восприятия
 
+                await Task.Run(() => Thread.Sleep(EvolutionControllerProvider.Delay / 300)); // 300 - подобранное значение, оптимального для визуального восприятия
             }
         }
 
@@ -63,6 +61,8 @@ namespace alg_Simulation_Evolution.EngineOfEvolution
         /// <summary> Эволюционировать: двигать все живые организмы к пище </summary>
         private async IAsyncEnumerable<(IOrganism, Point)> Evolving()
         {
+            if (!EvolutionControllerProvider.Continue()) yield break; // Если эволюция не была запущена выйти
+
             foreach (var organism in _dataProvider.Organisms.ToList())
             {
                 var (positionNearestFood, distanceNearestFood) = FindNearestFood(organism, _dataProvider.Food);
