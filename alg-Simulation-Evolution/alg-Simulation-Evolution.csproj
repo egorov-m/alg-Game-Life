@@ -17,6 +17,7 @@
     <Authors>Egorov Mikhail</Authors>
     <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -27,6 +28,10 @@
     <DebugType>embedded</DebugType>
     <Optimize>True</Optimize>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\favicon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RealTimeGraphX.WPF\RealTimeGraphX.WPF.csproj" />
